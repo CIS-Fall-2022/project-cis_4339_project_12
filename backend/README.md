@@ -1,49 +1,42 @@
-# Backend
+# TODO:
 
-This implementation is for NodeJS based on [Express](https://expressjs.com/) and [MongoDB](https://www.mongodb.com/) and uses [mongoose](https://mongoosejs.com/) as the ODM.
+- Create delete endpoints for all collections
+- Create CRUD endpoints for the organization collection
 
-## Project setup
+# Overview - CIS4339 Data Platform Project (Backend)
+On the backend, [Mongoose ODM](https://www.mongodb.com/developer/languages/javascript/mongoose-versus-nodejs-driver/) is used as a schema validation layer in order to allow documents to have the same structure for a particular collection.[Express](http://expressjs.com/en/guide/using-middleware.html) serves as the middleware between the MongoDB database and the API built using [NodeJS](https://nodejs.org/en/docs/).
+
+## Contents
+- [Backend Functionality](#Backend-Functionality)
+- [API Start Up](#api-start-up)
+- [API Documentation](#api-documentation)
+  - [Primary Data Routes](#1-primary-dataclients)
+  - [Organization Data Routes](#2-organizations)
+
+## Backend Functionality
+- Able to read, create, update and delete client data
+- Able to read, create, update and delete event data
+- Able to create,read,update and delete organization data
+
+## API Start up
 ```
 npm install
 ```
-
-### Before startup 
 Setup a .env file with the following variables, e.g.:
-
 ```
 MONGO_URL = mongodb+srv://<username>:<password>@cluster0.abcdc.mongodb.net/dbname
 ```
-
-### Compiles and hot-reloads for development
+Then use
 ```
 npm start
 ```
 
-## Overview
-
-
 # API Documentation
 
-## Models
-### models.js
-<p>placeholder for model documentation </p>
-<p>ph for table (field, type, description) </p>
-
-## Routes/Endpoints
-
-### 2. primaryData.js
+## 1. Primary Data/Clients
 The primaryData routes and endpoints are used when the user tries to get entries of a client, get events associated with a single client, create clients and add them into the database, and update client's information.
 
-#### **Setup**
-<p>
-Activate express by instantiating an instance and setting it to a variable. Then, create a router for this instance to handle requests.
-
-Then, import the data models from the models schema which uses mongoose as middleware to keep the structure of the collection.
-
-In the primary data schema, both the primaryData and eventData schemas are imported.
-</p>
-
-#### **2.1 Getting All Client Entries**
+#### **1.1 Getting All Client Entries**
 Returns details of all clients.
 
 ```
@@ -124,7 +117,7 @@ Possible Errors:
 </tbody>
 </table>
 
-#### **2.2 Get 1 Client by ID**
+#### **1.2 Get 1 Client by ID**
 Returns all details of the specified clients provided a valid client ID as URL token.
 
 ```
@@ -214,7 +207,7 @@ Return Client Object Contains:
 
 
 
-#### **2.3 Get 1 Client by First Name and/or Last Name**
+#### **1.3 Get 1 Client by First Name and/or Last Name**
 Returns all details of the specified clients provided a first name or lastname or both first and last name. The query uses a filter to search through the results. There may be multiple client objects that meet the requirements of a given first and last name. 
 
 ```
@@ -309,7 +302,7 @@ Return Client Object Contains:
 </tbody>
 </table>
 
-#### **2.4 Get Events by Client ID**
+#### **1.4 Get Events by Client ID**
 Returns details of each event that the client is involved with.
 
 ```
@@ -390,7 +383,8 @@ Return Event Object Contains:
 </tr>
 </tbody>
 </table>
-
+<!-- 
+Phone numbers is not within an array anymore -->
 #### **2.5 Creating a Client**
 Creates a client using a POST request or the client intake form.
 
@@ -440,7 +434,7 @@ Possible Errors:
 </tbody>
 </table>
 
-#### **2.6 Updating a Client's Information**
+#### **1.6 Updating a Client's Information**
 Updates a client's informatio using a PUT request based on the client's ID.
 
 ```
@@ -522,4 +516,7 @@ NOTE: All GET, POST, and PUT requests will be handled by the router.
 <p>ph for table (field, type, description) 
 </p>
 <p>Creating an event with primaryData</p>
+
+## 2. Organizations
+TODO: Add routes for organizations to be created, updated and deleted
 
