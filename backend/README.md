@@ -886,6 +886,7 @@ Possible Errors:
 
 
 
+
 ## 2. Organizations
 TODO: Add routes for organizations to be created, updated and deleted
 
