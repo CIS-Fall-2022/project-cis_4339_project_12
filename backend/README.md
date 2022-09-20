@@ -676,7 +676,7 @@ Return event Object Contains:
 Returns details of all clients that are attending when given an ID.
 
 ```
-GET http://localhost:3000/primaryData/events/attendees
+GET http://localhost:3000/eventData/events/attendees
 ```
 
 Parameter list:
