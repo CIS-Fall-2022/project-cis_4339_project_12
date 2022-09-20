@@ -385,7 +385,7 @@ Return Event Object Contains:
 </table>
 <!-- 
 Phone numbers is not within an array anymore -->
-#### **2.5 Creating a Client**
+#### **1.5 Creating a Client**
 Creates a client using a POST request or the client intake form.
 
 ```
@@ -511,11 +511,380 @@ Possible Errors:
 
 NOTE: All GET, POST, and PUT requests will be handled by the router.
 
-### eventsData.js
-<p>placehodler for eventsData.js documentation</p>
-<p>ph for table (field, type, description) 
-</p>
-<p>Creating an event with primaryData</p>
+## **2. Event Data**
+The eventData document will stored all the information regarding the event and have routes/endpoints which will lead to information about a specific event. Furthermore, the routes will also allow the creation of new events, update events information if needed, how many attendees are there for an event, and get entries of all the events.
+
+#### **2.1 Getting all Event entries**
+This will return details of all the events that are taking place. 
+
+```
+GET http://localhost:3000/eventData
+```
+Event Data object contains: 
+
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required?</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_id</code></td>
+<td>string</td>
+<td>required</td>
+<td>The unique identifier of event</td>
+</tr>
+<tr>
+<td><code>eventName</code></td>
+<td>string</td>
+<td>required</td>
+<td>The name of the event</td>
+</tr>
+<tr>
+<td><code>Date</code></td>
+<td>Date</td>
+<td>required</td>
+<td>When the event will take place</td>
+</tr>
+<tr>
+<td><code>Event Address</code></td>
+<td>Object</td>
+<td>required</td>
+<td>Contains 5 Strings to hold the client's line 1 adress, line 2 adress, city, country, and zip respectively</td>
+</tr>
+<tr>
+<td><code>Description</code></td>
+<td>string</td>
+<td>not required</td>
+<td>Description of the event </td>
+</tr>
+
+</table>
+
+Possible Errors:
+
+<table>
+<thead>
+<tr>
+<th>Error code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>405 Unknown</td>
+<td>The request cannot access the database to find data</td>
+</tr>
+</tbody>
+</table>
+
+#### **2.2 Getting an event by Event Name or Date**
+Retrieve an event using the event name or date parameters. 
+
+```
+GET http://localhost:3000/eventData/eventName/  
+
+```
+Parameter list:
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required?</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>eventName</code></td>
+<td>string</td>
+<td>required</td>
+<td>The name of the event</td>
+</tr>
+<tr>
+<td><code>Date</code></td>
+<td>Date</td>
+<td>required</td>
+<td>When the event will take place</td>
+</tr>
+</tbody>
+</table>
+
+Possible Errors:
+<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
+
+<table>
+<thead>
+<tr>
+<th>Error code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400 Bad Request</td>
+<td>Required fields not specified</td>
+</tr>
+<tr>
+<td>401 Unauthorized</td>
+<td>The ID is invalid</td>
+</tr>
+<tr>
+<td>405 Unknown</td>
+<td>The request cannot access the database to find data</td>
+</tr>
+</tbody>
+</table>
+
+Return event Object Contains:
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>eventName</code></td>
+<td>string</td>
+<td>Name of the event</td>
+</tr>
+<tr>
+<td><code>Date</code></td>
+<td>Date</td>
+<td>Date of the event that will take place</td>
+</tr>
+<tr>
+<td><code>Address</code></td>
+<td>Object</td>
+<td>Contains the address strings of the event</td>
+
+</tbody>
+</table>
+
+
+
+#### **2.3 Get Attendees list by Event ID**
+Returns details of all clients that are attending when given an ID.
+
+```
+GET http://localhost:3000/primaryData/events/attendees
+```
+
+Parameter list:
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required?</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_id</code></td>
+<td>string</td>
+<td>required</td>
+<td>The unique identifier of the client</td>
+</tr>
+</tbody>
+</table>
+
+Possible Errors:
+<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
+
+<table>
+<thead>
+<tr>
+<th>Error code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400 Bad Request</td>
+<td>Required fields not specified</td>
+</tr>
+<tr>
+<td>401 Unauthorized</td>
+<td>The ID is invalid</td>
+</tr>
+<tr>
+<td>405 Unknown</td>
+<td>The request cannot access the database to find data</td>
+</tr>
+</tbody>
+</table>
+
+Return Event Object Contains:
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>firstName</code></td>
+<td>string</td>
+<td>First Name of the client/attendee</td>
+</tr>
+<tr>
+<td><code>lastName</code></td>
+<td>string</td>
+<td>LastName of the client/attendee</td>
+</tr>
+<tr>
+<td><code>address</code></td>
+<td>Object</td>
+<td>Address of the client</td>
+</tr>
+<td><code>phoneNumbers</code></td>
+<td>Object</td>
+<td>Contains the primary phone number of the cilent</td>
+</tr>
+</tbody>
+</table>
+
+
+### **2.4 Create a new event**
+Create using a POST request or the client intake form.
+New event can be created using a POST request which will have frontend called 'Create Event'. This will be linked with the OrganizationData _id to show which organizations is holding the event.
+```
+POST http://localhost:3000/eventData/
+```
+
+Example Request:
+
+```
+POST / HTTP/1.1
+Host: localhost:3000
+Content-Type: application/json
+Accept: application/json
+Accept-Charset: utf-8
+
+{
+  "_id": "96fb0b80-2d4d-11ed-8dbb-afee4c00c4cb",
+  "eventName": "Cancer Awareness",
+  "Services": "Family Support",
+  "address": {
+    "line1": "123 memorial drive"
+    "city":"Houston"
+    "zip": "77712"
+  "organization_id":"(organization id)"
+}
+```
+
+
+Possible Errors:
+<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
+
+<table>
+<thead>
+<tr>
+<th>Error code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400 Bad Request</td>
+<td>Required fields not specified</td>
+</tr>
+<tr>
+<td>405 Unknown</td>
+<td>The request cannot access the database to find data</td>
+</tr>
+</tbody>
+</table>
+
+#### **2.5 Updating Event Information**
+To update an event information, PUT request will be utilized by using the event ID.
+```
+PUT http://localhost:3000/eventData/:id
+```
+
+Here, the id is the event's ID whose information will be updated.
+
+Example Request:
+
+```
+PUT / HTTP/1.1
+Host: localhost:3000
+Content-Type: application/json
+Accept: application/json
+Accept-Charset: utf-8
+
+{
+  "_id": "96fb0b80-2d4d-11ed-8dbb-afee4c00c4cb",
+  "eventName": "Cancer Awareness",
+  "Services": "Family Support",
+  "address": {
+    "line1": "123 memorial drive"
+    "city":"Austin"
+    "zip": "87712"
+}
+```
+
+Response will be identical with the addition of the follwing field:
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>_id</td>
+<td>String</td>
+<td>Client ID that is associated to the update request
+</tr>
+</tbody>
+</table>
+
+
+
+Possible Errors:
+<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
+
+<table>
+<thead>
+<tr>
+<th>Error code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400 Bad Request</td>
+<td>Required fields not specified</td>
+</tr>
+<tr>
+<td>401 Unauthorized</td>
+<td>The ID is invalid</td>
+</tr>
+<tr>
+<td>405 Unknown</td>
+<td>The request cannot access the database to find data</td>
+</tr>
+</tbody>
+</table>
+
+
 
 ## 2. Organizations
 TODO: Add routes for organizations to be created, updated and deleted
