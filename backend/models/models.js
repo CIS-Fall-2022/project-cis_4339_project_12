@@ -7,7 +7,7 @@ let primaryDataSchema = new Schema({
     _id: { type: String, default: uuid.v1 },
     firstName: {
         type: String,
-        require: true
+        required: true
     },
     middleName: {
         type: String,
@@ -20,8 +20,13 @@ let primaryDataSchema = new Schema({
         type: String
     },
     phoneNumbers: {
-        type: Array,
-        required: true
+        primaryPhone: {
+            type: String,
+            required: True
+        },
+        secondaryPhone: {
+            type: String
+        }
     },
     address: {
         line1: {
@@ -40,6 +45,10 @@ let primaryDataSchema = new Schema({
         zip: {
             type: String,
         }
+    },
+    organization_id: {
+        type: String,
+        required: True
     }
 }, {
     collection: 'primaryData',
@@ -51,7 +60,7 @@ let eventDataSchema = new Schema({
     _id: { type: String, default: uuid.v1 },
     eventName: {
         type: String,
-        require: true
+        required: true
     },
     services: {
         type: Array
@@ -82,14 +91,32 @@ let eventDataSchema = new Schema({
     },
     attendees: [{
         type: String
-    }]
+    }],
+    organization_id: {
+        type: String,
+        required: True
+    }
 }, {
     collection: 'eventData'
+});
+
+//TODO: Revise this schema creation
+//THOUGHTS: Is this schema even needed? How will new organizations be created?
+let organizationDataSchema = new Schema({
+    // _id is type string to faciliate 3 letter IDs like BOL, CFC etc
+    _id:{ type: String},
+    organizationName: {
+        type: String
+    },
+    organizationDesc: {
+        type: String
+    }
 });
 
 // create models from mongoose schemas
 const primarydata = mongoose.model('primaryData', primaryDataSchema);
 const eventdata = mongoose.model('eventData', eventDataSchema);
+const orgdata = mongoose.model('organizationData', organizationDataSchema);
 
 // package the models in an object to export 
-module.exports = { primarydata, eventdata }
+module.exports = { primarydata, eventdata, orgdata };
