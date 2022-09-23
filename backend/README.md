@@ -1,7 +1,9 @@
 # TODO:
 
-- Create delete endpoints for all collections
-- Create CRUD endpoints for the organization collection
+- Create DELETE endpoints for all collections
+- ~~Create CRUD endpoints for the organization collection~~
+- Finish adding response/requests for organizationData end points along with error codes and field descriptions
+
 
 # Overview - CIS4339 Data Platform Project (Backend)
 On the backend, [Mongoose ODM](https://www.mongodb.com/developer/languages/javascript/mongoose-versus-nodejs-driver/) is used as a schema validation layer in order to allow documents to have the same structure for a particular collection.[Express](http://expressjs.com/en/guide/using-middleware.html) serves as the middleware between the MongoDB database and the API built using [NodeJS](https://nodejs.org/en/docs/).
@@ -11,6 +13,7 @@ On the backend, [Mongoose ODM](https://www.mongodb.com/developer/languages/javas
 - [API Start Up](#api-start-up)
 - [API Documentation](#api-documentation)
   - [Primary Data Routes](#1-primary-dataclients)
+  - [Event Data Routes](#2-event-data)
   - [Organization Data Routes](#2-organizations)
 
 ## Backend Functionality
@@ -887,7 +890,7 @@ Possible Errors:
 
 
 
-## 2. Organizations
+## 3. **Organizations**
 #### NB. These routes/endpoints are only accessible via API and will not be a front-end feature.<br><br>
 ### 2.1 Getting all organizations from organizationData collection
 
@@ -911,7 +914,7 @@ Content-Type: application/json; charset=utf-8
   "organizationDesc": "Saving lives"
 }
 ```
-### 2.2 Updating specific organization from organizationData collection
+### **3.2 Updating specific organization from organizationData collection**
 ### Method - PUT
 
 ````
@@ -925,7 +928,7 @@ Example Response:
 ```
 TO BE ADDED
 ```
-### 2.3 Creating new organization within organizationData collection
+### **3.3 Creating new organization within organizationData collection**
 ### Method - POST
 ```
 POST http://localhost:{PORT}/organizationData
@@ -938,7 +941,7 @@ Example Response:
 ```
 TO BE ADDED
 ```
-### 2.4 Deleting specific organization within organizationData collection
+### **3.4 Deleting specific organization within organizationData collection**
 ### Method - DELETE
 ```
 DELETE http://localhost:{PORT}/organizationData
