@@ -407,8 +407,11 @@ Accept-Charset: utf-8
 {
   "_id": "96fb0b80-2d4d-11ed-8dbb-afee4c00c4cb",
   "firstName": "Pablo",
-  "lastName": "Escobang",
-  "phoneNumbers": ["7135558787", "8325554545"],
+  "lastName": "Escobang", 
+  "phoneNumbers": {
+        "primaryPhone": "7135558787",
+        "secondaryPhone": "8325554545"        
+    },
   "address": {
     "city": "Houston"
 }
