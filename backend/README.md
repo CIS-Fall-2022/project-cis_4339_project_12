@@ -892,42 +892,94 @@ Possible Errors:
 
 ## 3. **Organizations**
 #### NB. These routes/endpoints are only accessible via API and will not be a front-end feature.<br><br>
-### 2.1 Getting all organizations from organizationData collection
+### 3.1 Getting all organizations from organizationData collection
 
-### Method - GET
-
+### Endpoint - GET Method
 ````
 GET http://localhost:{PORT}/organizationData
 ````
-
-Example Request:
-```
-TO BE ADDED
-```
 Example Response:
 ```
 HTTP/1.1 200 OK
 Content-Type: application/json; charset=utf-8
 
-{
-  "_id": "BOL",
-  "organizationDesc": "Saving lives"
-}
+[
+  {
+  _id: "BOL",
+	organizationName: "Bread Of Life",
+	organizationDesc: "Saving The Community"
+  },
+  {
+    _id: "CFC",
+	organizationName: "Community Family Centers",
+	organizationDesc: "Developing A Bright Future"
+  }
+]
 ```
-### **3.2 Updating specific organization from organizationData collection**
-### Method - PUT
 
+Where an organization object is:
+| Field             | Type     | Description                |
+| ---------------   |----------|- |
+| `_id`             | string   | Unique organization ID     |
+| `organizationName`| string   | Name of Organization       |
+| `organizationDesc`| string   | Decription of organization |
+
+Possible errors:
+
+| Error code           | Description                                                                           |
+| ---------------------|---------------------------------------------------------------------------------------|
+|
+# **INCOMPLETE**
+### **3.2 Updating specific organization from organizationData collection**
+### Endpoint - PUT Method
 ````
-PUT http://localhost:{PORT}/organizationData
+PUT http://localhost:{PORT}/organizationData/:id
 ````
+Send a PUT request to update a specific organization's data
+
 Example Request:
 ```
-TO BE ADDED
+PUT / HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+Accept-Charset: utf-8
+
+{
+  "organizationDesc":"Saving The Lives",
+  "organizationName": "Bread of Life"
+}
 ```
+With the following query/parameters:
+````
+
+````
+
+
+
+And with the following body object:
+
+| Parameter       | Type     | Required?  | Description                                     |
+| -------------   |----------|------------|-------------------------------------------------|
+| `refresh_token` | string   | required   | A valid refresh token.                          |
+| `client_id`     | string   | required   | Your integration’s `clientId`                   |
+| `client_secret` | string   | required   | Your integration’s `clientSecret`               |
+| `grant_type`    | string   | required   | The literal string "refresh_token"              |
+
 Example Response:
 ```
 TO BE ADDED
 ```
+
+
+
+Possible errors:
+
+| Error code           | Description                                                                           |
+| ---------------------|---------------------------------------------------------------------------------------|
+| 401 Unauthorized     | The `accessToken` is invalid, lacks the `listPublications` scope or has been revoked. |
+| 403 Forbidden        | The request attempts to list publications for another user.                           |
+
+# **INCOMPLETE**
 ### **3.3 Creating new organization within organizationData collection**
 ### Method - POST
 ```
@@ -941,6 +993,7 @@ Example Response:
 ```
 TO BE ADDED
 ```
+# **INCOMPLETE**
 ### **3.4 Deleting specific organization within organizationData collection**
 ### Method - DELETE
 ```
