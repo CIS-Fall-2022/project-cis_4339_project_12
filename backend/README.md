@@ -518,5 +518,66 @@ NOTE: All GET, POST, and PUT requests will be handled by the router.
 <p>Creating an event with primaryData</p>
 
 ## 2. Organizations
-TODO: Add routes for organizations to be created, updated and deleted
+#### NB. These routes/endpoints are only accessible via API and will not be a front-end feature.<br><br>
+### 2.1 Getting all organizations from organizationData collection
 
+### Method - GET
+
+````
+GET http://localhost:{PORT}/organizationData
+````
+
+Example Request:
+```
+TO BE ADDED
+```
+Example Response:
+```
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+{
+  "_id": "BOL",
+  "organizationDesc": "Saving lives"
+}
+```
+### 2.2 Updating specific organization from organizationData collection
+### Method - PUT
+
+````
+PUT http://localhost:{PORT}/organizationData
+````
+Example Request:
+```
+TO BE ADDED
+```
+Example Response:
+```
+TO BE ADDED
+```
+### 2.3 Creating new organization within organizationData collection
+### Method - POST
+```
+POST http://localhost:{PORT}/organizationData
+```
+Example Request:
+```
+TO BE ADDED
+```
+Example Response:
+```
+TO BE ADDED
+```
+### 2.4 Deleting specific organization within organizationData collection
+### Method - DELETE
+```
+DELETE http://localhost:{PORT}/organizationData
+```
+Example Request:
+```
+TO BE ADDED
+```
+Example Response:
+```
+TO BE ADDED
+```
