@@ -1,6 +1,7 @@
 # TODO:
 
 - Create DELETE endpoints for all collections
+- Create Routes for the graph with analytics
 - ~~Create CRUD endpoints for the organization collection~~
 - Finish adding response/requests for organizationData end points along with error codes and field descriptions
 
@@ -441,7 +442,7 @@ Possible Errors:
 </table>
 
 #### **1.6 Updating a Client's Information**
-Updates a client's informatio using a PUT request based on the client's ID.
+Updates a client's information using a PUT request based on the client's ID.
 
 ```
 PUT http://localhost:3000/primaryData/:id
@@ -462,13 +463,16 @@ Accept-Charset: utf-8
   "_id": "96fb0b80-2d4d-11ed-8dbb-afee4c00c4cb",
   "firstName": "Pablito",
   "lastName": "Escobongo",
-  "phoneNumbers": ["7135555555", "8325556666"],
+  "phoneNumbers": {
+    "primaryPhone": "7135555555", 
+    "secondaryPhone": "8325556666"
+    },
   "address": {
     "city": "Dallas"
 }
 ```
 
-Response will be identical with the addition of the follwing field:
+Response will be identical with the change using the follwing field for matching:
 <table>
 <thead>
 <tr>
@@ -514,8 +518,77 @@ Possible Errors:
 </tbody>
 </table>
 
+#### **1.7 Deleting a Client's Information**
+Deletes a client's information using a DELETE request based on the client's ID.
 
-NOTE: All GET, POST, and PUT requests will be handled by the router.
+```
+DELETE http://localhost:3000/primaryData/deleteClient/:id
+```
+
+Here, the id is the client's ID whose information will be deleted.
+
+Example Request:
+
+```
+DELETE / HTTP/1.1
+Host: localhost:3000
+Content-Type: application/json
+Accept: application/json
+Accept-Charset: utf-8
+
+{
+    "_id": "96fb0b80-2d4d-11ed-8dbb-afee4c00c4ca"
+}
+```
+
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>_id</td>
+<td>String</td>
+<td>Client ID that is associated to the delete request
+</tr>
+</tbody>
+</table>
+
+Response will remove the client entry that matches the id in the parameter.
+
+
+Possible Errors:
+<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
+
+<table>
+<thead>
+<tr>
+<th>Error code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400 Bad Request</td>
+<td>Required fields not specified</td>
+</tr>
+<tr>
+<td>401 Unauthorized</td>
+<td>The ID is invalid</td>
+</tr>
+<tr>
+<td>405 Unknown</td>
+<td>The request cannot access the database to find data</td>
+</tr>
+</tbody>
+</table>
+
+
+NOTE: All GET, POST, PUT, and DELETE requests will be handled by the router.
 
 ## **2. Event Data**
 The eventData document will stored all the information regarding the event and have routes/endpoints which will lead to information about a specific event. Furthermore, the routes will also allow the creation of new events, update events information if needed, how many attendees are there for an event, and get entries of all the events.
