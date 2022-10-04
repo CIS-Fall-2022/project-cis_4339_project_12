@@ -111,6 +111,8 @@ let organizationDataSchema = new Schema({
     organizationDesc: {
         type: String
     }
+},{
+    collection: 'organizationData'
 });
 
 // create models from mongoose schemas
