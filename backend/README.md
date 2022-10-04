@@ -896,7 +896,7 @@ Possible Errors:
 
 ### Endpoint - GET Method
 ````
-GET http://localhost:{PORT}/organizationData
+GET http://localhost:3000/organizationData
 ````
 Example Response:
 ```
@@ -924,22 +924,19 @@ Where an organization object is:
 | `organizationName`| string   | Name of Organization       |
 | `organizationDesc`| string   | Decription of organization |
 
-Possible errors:
+<br>
+<br>
 
-| Error code           | Description                                                                           |
-| ---------------------|---------------------------------------------------------------------------------------|
-|
-# **INCOMPLETE**
 ### **3.2 Updating specific organization from organizationData collection**
 ### Endpoint - PUT Method
 ````
-PUT http://localhost:{PORT}/organizationData/:id
+PUT http://localhost:3000/organizationData/:id
 ````
 Send a PUT request to update a specific organization's data
 
 Example Request:
 ```
-PUT / HTTP/1.1
+PUT / HTTP/1.1 200 ok
 Content-Type: application/json
 Accept: application/json
 Accept-Charset: utf-8
@@ -951,59 +948,75 @@ Accept-Charset: utf-8
 ```
 With the following query/parameters:
 ````
-
+?id = BOL
 ````
+Example Response:
+```
+BOL has been updated successfully.
+```
+Possible errors:
 
+| Error code           | Description                                                                           |
+| ---------------------|---------------------------------------------------------------------------------------|
+| 400 Bad Request     | No organization ID (`_id`) was included in the request |                         |
 
+<br>
+<br>
 
-And with the following body object:
+### **3.3 Creating new organization within organizationData collection**
+### Method - POST
+```
+POST http://localhost:3000/organizationData
+```
+Example Request:
+```
+POST / HTTP/1.1 200 ok
+Content-Type: application/json
+Accept: application/json
+Accept-Charset: utf-8
 
-| Parameter       | Type     | Required?  | Description                                     |
-| -------------   |----------|------------|-------------------------------------------------|
-| `refresh_token` | string   | required   | A valid refresh token.                          |
-| `client_id`     | string   | required   | Your integration’s `clientId`                   |
-| `client_secret` | string   | required   | Your integration’s `clientSecret`               |
-| `grant_type`    | string   | required   | The literal string "refresh_token"              |
+{
+    "_id":"BOL",
+    "organizationName": "Bread of Life"
+}
+```
+Where an organization object is:
+| Field             | Type     | Description                |
+| ---------------   |----------|- |
+| `_id`             | string   | Unique organization ID     |
+| `organizationName`| string   | Name of Organization       |
+| `organizationDesc`| string   | Decription of organization |
 
 Example Response:
 ```
-TO BE ADDED
+BOL has been added successfully.
 ```
-
-
 
 Possible errors:
 
 | Error code           | Description                                                                           |
 | ---------------------|---------------------------------------------------------------------------------------|
-| 401 Unauthorized     | The `accessToken` is invalid, lacks the `listPublications` scope or has been revoked. |
-| 403 Forbidden        | The request attempts to list publications for another user.                           |
+| 400 Bad Request     | No organization ID (`_id`) was included in the request |
 
-# **INCOMPLETE**
-### **3.3 Creating new organization within organizationData collection**
-### Method - POST
-```
-POST http://localhost:{PORT}/organizationData
-```
-Example Request:
-```
-TO BE ADDED
-```
-Example Response:
-```
-TO BE ADDED
-```
-# **INCOMPLETE**
+<br>
+<br>
+
 ### **3.4 Deleting specific organization within organizationData collection**
 ### Method - DELETE
 ```
-DELETE http://localhost:{PORT}/organizationData
+DELETE http://localhost:3000/organizationData/:id
 ```
-Example Request:
-```
-TO BE ADDED
-```
+With the following query/parameters:
+````
+?id = BOL
+````
 Example Response:
 ```
-TO BE ADDED
+BOL has been deleted successfully.
+```
+Possible errors:
+
+| Error code           | Description                                                                           |
+| ---------------------|---------------------------------------------------------------------------------------|
+| 400 Bad Request     | No organization ID (`_id`) was included in the request |
 ```
