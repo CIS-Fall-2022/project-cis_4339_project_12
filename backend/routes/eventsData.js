@@ -65,6 +65,40 @@ router.get("/client/:id", (req, res, next) => {
     );
 });
 
+// GET attendee count for specific event within last 2 months
+// https://stackoverflow.com/questions/21387969/mongodb-count-the-number-of-items-in-an-array
+router.get("/attendees",(req,res,next)=>{
+    let todayDate = new Date();
+    // Sets month to two months ago
+    todayDate.setMonth(todayDate.getMonth() - 2);
+    let twoMonthsAgo = todayDate;
+    eventdata.aggregate([
+        {
+            $match: {date:{$gte: twoMonthsAgo}},
+        },
+        {
+            $project:{eventName:1, attendees:1}
+        },
+        {
+            $group:{
+                _id:"$_id",
+                eventName: {$first:"$eventName"},
+                totalAttendees:{
+                    $sum:{
+                        $size:"$attendees"
+                    }
+                }
+            }
+        }
+    ],(error, data) => {
+        if (error) {
+          return next(error)
+        } else {
+          res.json(data);
+        }
+    });
+});
+
 //POST
 router.post("/", (req, res, next) => { 
     eventdata.create( 
