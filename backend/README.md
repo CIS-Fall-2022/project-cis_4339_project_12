@@ -837,8 +837,32 @@ Return Event Object Contains:
 </tbody>
 </table>
 
+#### **2.4 Attendee count for events of last two months**
+Get all event attendee count for events in last two months
+```
+GET http://localhost:3000/attendees
+```
+Example Response:
+```
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
 
-### **2.4 Create a new event**
+[
+    {
+        "_id": "cac37b60-2be4-11ed-aa14-1124461477ba",
+        "eventName": "Food Drive Event",
+        "totalAttendees": 2
+    },
+    {
+        "_id": "633cde5e6be140127d95d257",
+        "eventName": "Food Drive Event 2",
+        "totalAttendees": 4
+    }
+]
+```
+
+
+### **2.5 Create a new event**
 Create using a POST request or the client intake form.
 New event can be created using a POST request which will have frontend called 'Create Event'. This will be linked with the OrganizationData _id to show which organizations is holding the event.
 ```
@@ -889,7 +913,7 @@ Possible Errors:
 </tbody>
 </table>
 
-#### **2.5 Updating Event Information**
+#### **2.6 Updating Event Information**
 To update an event information, PUT request will be utilized by using the event ID.
 ```
 PUT http://localhost:3000/eventData/:id
@@ -964,7 +988,6 @@ Possible Errors:
 </table>
 
 #### **2.6 Deleting Event Information**
-
 
 
 ## 3. **Organizations**
