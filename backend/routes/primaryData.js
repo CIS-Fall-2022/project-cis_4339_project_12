@@ -59,7 +59,7 @@ router.get("/search/", (req, res, next) => {
 router.get("/events/:id", (req, res, next) => { 
     eventdata.find(
         {
-            "attendeees": req.params.id
+            "attendees": req.params.id
         },
         (error, data) => { 
             if (error) {
@@ -105,7 +105,7 @@ router.put("/:id", (req, res, next) => {
 
 //DELETE a client by id
 // https://www.kindsonthegenius.com/nodejs/node-js-rest-api-with-typescript-part-3-post-put-delete/
-router.delete("/deleteClient/:id", (req, res, next) => {
+router.delete("/:id", (req, res, next) => {
     primarydata.findOneAndDelete( 
         { _id: req.params.id }, 
         req.body,
