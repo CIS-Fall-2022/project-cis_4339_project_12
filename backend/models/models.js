@@ -22,7 +22,7 @@ let primaryDataSchema = new Schema({
     phoneNumbers: {
         primaryPhone: {
             type: String,
-            required: True
+            required: true
         },
         secondaryPhone: {
             type: String
@@ -48,7 +48,7 @@ let primaryDataSchema = new Schema({
     },
     organization_id: {
         type: String,
-        required: True
+        required: true
     }
 }, {
     collection: 'primaryData',
@@ -94,7 +94,7 @@ let eventDataSchema = new Schema({
     }],
     organization_id: {
         type: String,
-        required: True
+        required: true
     }
 }, {
     collection: 'eventData'

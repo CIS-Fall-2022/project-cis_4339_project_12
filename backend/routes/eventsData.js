@@ -3,6 +3,7 @@ const router = express.Router();
 
 //importing data model schemas
 let { eventdata } = require("../models/models"); 
+let { primarydata } = require("../models/models"); 
 
 //GET all entries
 router.get("/", (req, res, next) => { 
@@ -129,7 +130,7 @@ router.put("/addAttendee/:id", (req, res, next) => {
 
 
 //DELETE event data
-router.delete("/delete/:id", (req, res, next) => {
+router.delete("/", (req, res, next) => {
     eventdata.findByIdAndDelete(
         { _id: req.params.id },
         req.body,
