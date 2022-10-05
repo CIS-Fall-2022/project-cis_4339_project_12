@@ -887,6 +887,7 @@ Possible Errors:
 </tbody>
 </table>
 
+#### **2.6 Deleting Event Information**
 
 
 
