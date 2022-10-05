@@ -57,7 +57,18 @@ router.get("/search/", (req, res, next) => {
 
 //GET events for a single client
 router.get("/events/:id", (req, res, next) => { 
-    
+    eventdata.find(
+        {
+            "attendees": req.params.id
+        },
+        (error, data) => { 
+            if (error) {
+                return next(error);
+            } else {
+                res.json(data);
+            }
+        }
+    );
 });
 
 //POST
@@ -80,6 +91,22 @@ router.post("/", (req, res, next) => {
 //PUT update (make sure req body doesn't have the id)
 router.put("/:id", (req, res, next) => { 
     primarydata.findOneAndUpdate( 
+        { _id: req.params.id }, 
+        req.body,
+        (error, data) => {
+            if (error) {
+                return next(error);
+            } else {
+                res.json(data);
+            }
+        }
+    );
+});
+
+//DELETE a client by id
+// https://www.kindsonthegenius.com/nodejs/node-js-rest-api-with-typescript-part-3-post-put-delete/
+router.delete("/:id", (req, res, next) => {
+    primarydata.findOneAndDelete( 
         { _id: req.params.id }, 
         req.body,
         (error, data) => {
