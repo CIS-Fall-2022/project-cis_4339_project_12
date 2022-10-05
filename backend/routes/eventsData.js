@@ -31,6 +31,7 @@ router.get("/id/:id", (req, res, next) => {
 
 //GET entries based on search query
 //Ex: '...?eventName=Food&searchBy=name' 
+//come back
 router.get("/search/", (req, res, next) => { 
     let dbQuery = "";
     if (req.query["searchBy"] === 'name') {
@@ -130,7 +131,7 @@ router.put("/addAttendee/:id", (req, res, next) => {
 
 
 //DELETE event data
-router.delete("/", (req, res, next) => {
+router.delete("/:id", (req, res, next) => {
     eventdata.findByIdAndDelete(
         { _id: req.params.id },
         req.body,
