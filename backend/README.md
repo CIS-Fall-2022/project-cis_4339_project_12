@@ -1,10 +1,5 @@
-# TODO:
-
-- Create DELETE endpoints for all collections
-- Create Routes for the graph with analytics
-- ~~Create CRUD endpoints for the organization collection~~
-- Finish adding response/requests for organizationData end points along with error codes and field descriptions
-
+# POSTMAN Documentation (Most Current)
+Link here: https://documenter.getpostman.com/view/19779849/2s83zfQkVv
 
 # Overview - CIS4339 Data Platform Project (Backend)
 On the backend, [Mongoose ODM](https://www.mongodb.com/developer/languages/javascript/mongoose-versus-nodejs-driver/) is used as a schema validation layer in order to allow documents to have the same structure for a particular collection.[Express](http://expressjs.com/en/guide/using-middleware.html) serves as the middleware between the MongoDB database and the API built using [NodeJS](https://nodejs.org/en/docs/).
