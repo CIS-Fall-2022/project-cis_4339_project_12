@@ -79,7 +79,7 @@ router.post("/", (req, res, next) => {
             if (error) {
                 return next(error);
             } else {
-                res.json(data); 
+                res.send(req.body.firstName + " has successfully been added."); 
             }
         }
     );
@@ -97,7 +97,7 @@ router.put("/:id", (req, res, next) => {
             if (error) {
                 return next(error);
             } else {
-                res.json(data);
+                res.send(data.firstName + " has successfully been updated.");
             }
         }
     );
@@ -113,7 +113,7 @@ router.delete("/:id", (req, res, next) => {
             if (error) {
                 return next(error);
             } else {
-                res.json(data);
+                res.send("Client has successfully been deleted.");
             }
         }
     );
