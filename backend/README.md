@@ -1,10 +1,5 @@
-# TODO:
-
-- Create DELETE endpoints for all collections
-- Create Routes for the graph with analytics
-- ~~Create CRUD endpoints for the organization collection~~
-- Finish adding response/requests for organizationData end points along with error codes and field descriptions
-
+# POSTMAN Documentation (Most Current)
+Link here: https://documenter.getpostman.com/view/19779849/2s83zfQkVv
 
 # Overview - CIS4339 Data Platform Project (Backend)
 On the backend, [Mongoose ODM](https://www.mongodb.com/developer/languages/javascript/mongoose-versus-nodejs-driver/) is used as a schema validation layer in order to allow documents to have the same structure for a particular collection.[Express](http://expressjs.com/en/guide/using-middleware.html) serves as the middleware between the MongoDB database and the API built using [NodeJS](https://nodejs.org/en/docs/).
@@ -41,7 +36,7 @@ npm start
 The primaryData routes and endpoints are used when the user tries to get entries of a client, get events associated with a single client, create clients and add them into the database, and update client's information.
 
 #### **1.1 Getting All Client Entries**
-Returns details of all clients.
+Returns details of last ten (10) most recently updated/added clients.
 
 ```
 GET http://localhost:3000/primaryData
@@ -104,23 +99,6 @@ Client Object contains:
 </tbody>
 </table>
 
-Possible Errors:
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
-</tbody>
-</table>
-
 #### **1.2 Get 1 Client by ID**
 Returns all details of the specified clients provided a valid client ID as URL token.
 
@@ -145,32 +123,6 @@ Parameter list:
 <td>string</td>
 <td>required</td>
 <td>The unique identifier of the client</td>
-</tr>
-</tbody>
-</table>
-
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>401 Unauthorized</td>
-<td>The ID is invalid</td>
-</tr>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
 </tr>
 </tbody>
 </table>
@@ -251,28 +203,6 @@ Parameter list:
 </tbody>
 </table>
 
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
-</tbody>
-</table>
-
 Return Client Object Contains:
 <table>
 <thead>
@@ -334,32 +264,6 @@ Parameter list:
 </tbody>
 </table>
 
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>401 Unauthorized</td>
-<td>The ID is invalid</td>
-</tr>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
-</tbody>
-</table>
-
 Return Event Object Contains:
 <table>
 <thead>
@@ -387,8 +291,7 @@ Return Event Object Contains:
 </tr>
 </tbody>
 </table>
-<!-- 
-Phone numbers is not within an array anymore -->
+
 #### **1.5 Creating a Client**
 Creates a client using a POST request or the client intake form.
 
@@ -406,7 +309,6 @@ Accept: application/json
 Accept-Charset: utf-8
 
 {
-  "_id": "96fb0b80-2d4d-11ed-8dbb-afee4c00c4cb",
   "firstName": "Pablo",
   "lastName": "Escobang", 
   "phoneNumbers": {
@@ -417,29 +319,6 @@ Accept-Charset: utf-8
     "city": "Houston"
 }
 ```
-
-
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
-</tbody>
-</table>
 
 #### **1.6 Updating a Client's Information**
 Updates a client's information using a PUT request based on the client's ID.
@@ -460,7 +339,6 @@ Accept: application/json
 Accept-Charset: utf-8
 
 {
-  "_id": "96fb0b80-2d4d-11ed-8dbb-afee4c00c4cb",
   "firstName": "Pablito",
   "lastName": "Escobongo",
   "phoneNumbers": {
@@ -485,35 +363,7 @@ Response will be identical with the change using the follwing field for matching
 <tr>
 <td>_id</td>
 <td>String</td>
-<td>Client ID that is associated to the update request
-</tr>
-</tbody>
-</table>
-
-
-
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>401 Unauthorized</td>
-<td>The ID is invalid</td>
-</tr>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
+<td>Client ID that is associated to the update request</td>
 </tr>
 </tbody>
 </table>
@@ -522,76 +372,15 @@ Possible Errors:
 Deletes a client's information using a DELETE request based on the client's ID.
 
 ```
-DELETE http://localhost:3000/primaryData/deleteClient/:id
+DELETE http://localhost:3000/primaryData/:id
 ```
 
 Here, the id is the client's ID whose information will be deleted.
 
-Example Request:
-
-```
-DELETE / HTTP/1.1
-Host: localhost:3000
-Content-Type: application/json
-Accept: application/json
-Accept-Charset: utf-8
-
-{
-    "_id": "96fb0b80-2d4d-11ed-8dbb-afee4c00c4ca"
-}
-```
-
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>_id</td>
-<td>String</td>
-<td>Client ID that is associated to the delete request
-</tr>
-</tbody>
-</table>
-
-Response will remove the client entry that matches the id in the parameter.
-
-
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>401 Unauthorized</td>
-<td>The ID is invalid</td>
-</tr>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
-</tbody>
-</table>
-
-
 NOTE: All GET, POST, PUT, and DELETE requests will be handled by the router.
 
 ## **2. Event Data**
-The eventData document will stored all the information regarding the event and have routes/endpoints which will lead to information about a specific event. Furthermore, the routes will also allow the creation of new events, update events information if needed, how many attendees are there for an event, and get entries of all the events.
+The eventData endpoints and routes will be used for all the information regarding events. Furthermore, the routes will also allow the creation of new events, update events information if needed, how many attendees are there for an event, and get entries of all the events.
 
 #### **2.1 Getting all Event entries**
 This will return details of all the events that are taking place. 
@@ -641,23 +430,6 @@ Event Data object contains:
 <td>not required</td>
 <td>Description of the event </td>
 </tr>
-
-</table>
-
-Possible Errors:
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
 </tbody>
 </table>
 
@@ -665,7 +437,7 @@ Possible Errors:
 Retrieve an event using the event name or date parameters. 
 
 ```
-GET http://localhost:3000/eventData/eventName/  
+GET http://localhost:3000/eventData/search/ 
 
 ```
 Parameter list:
@@ -695,32 +467,6 @@ Parameter list:
 </tbody>
 </table>
 
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>401 Unauthorized</td>
-<td>The ID is invalid</td>
-</tr>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
-</tbody>
-</table>
-
 Return event Object Contains:
 <table>
 <thead>
@@ -741,7 +487,6 @@ Return event Object Contains:
 <td>Date</td>
 <td>Date of the event that will take place</td>
 </tr>
-<tr>
 <td><code>Address</code></td>
 <td>Object</td>
 <td>Contains the address strings of the event</td>
@@ -751,11 +496,11 @@ Return event Object Contains:
 
 
 
-#### **2.3 Get Attendees list by Event ID**
-Returns details of all clients that are attending when given an ID.
+#### **2.3 Get event by event ID**
+Returns details of specified event.
 
 ```
-GET http://localhost:3000/eventData/events/attendees
+GET http://localhost:3000/eventData/id/:id"
 ```
 
 Parameter list:
@@ -774,71 +519,37 @@ Parameter list:
 <td><code>_id</code></td>
 <td>string</td>
 <td>required</td>
-<td>The unique identifier of the client</td>
+<td>The unique identifier of the event</td>
 </tr>
 </tbody>
 </table>
 
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
+#### **2.4 Attendee count for events of last two months**
+Get all event attendee count for events in last two months
+```
+GET http://localhost:3000/attendees
+```
+Example Response:
+```
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
 
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>401 Unauthorized</td>
-<td>The ID is invalid</td>
-</tr>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
-</tbody>
-</table>
-
-Return Event Object Contains:
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>firstName</code></td>
-<td>string</td>
-<td>First Name of the client/attendee</td>
-</tr>
-<tr>
-<td><code>lastName</code></td>
-<td>string</td>
-<td>LastName of the client/attendee</td>
-</tr>
-<tr>
-<td><code>address</code></td>
-<td>Object</td>
-<td>Address of the client</td>
-</tr>
-<td><code>phoneNumbers</code></td>
-<td>Object</td>
-<td>Contains the primary phone number of the cilent</td>
-</tr>
-</tbody>
-</table>
+[
+    {
+        "_id": "cac37b60-2be4-11ed-aa14-1124461477ba",
+        "eventName": "Food Drive Event",
+        "totalAttendees": 2
+    },
+    {
+        "_id": "633cde5e6be140127d95d257",
+        "eventName": "Food Drive Event 2",
+        "totalAttendees": 4
+    }
+]
+```
 
 
-### **2.4 Create a new event**
+### **2.5 Create a new event**
 Create using a POST request or the client intake form.
 New event can be created using a POST request which will have frontend called 'Create Event'. This will be linked with the OrganizationData _id to show which organizations is holding the event.
 ```
@@ -866,30 +577,7 @@ Accept-Charset: utf-8
 }
 ```
 
-
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
-</tbody>
-</table>
-
-#### **2.5 Updating Event Information**
+#### **2.6 Updating Event Information**
 To update an event information, PUT request will be utilized by using the event ID.
 ```
 PUT http://localhost:3000/eventData/:id
@@ -930,41 +618,46 @@ Response will be identical with the addition of the follwing field:
 <tr>
 <td>_id</td>
 <td>String</td>
-<td>Client ID that is associated to the update request
+<td>Client ID that is associated to the update request</td>
 </tr>
 </tbody>
 </table>
 
+#### **2.7 Adding attendee to event**
+This endpoint allows for an attendee to be added to an event
+```
+PUT http://localhost:3000/eventData/attendee/:id
+```
+Example Request:
+```
+PUT / HTTP/1.1 200 ok
+Content-Type: application/json
+Accept: application/json
+Accept-Charset: utf-8
 
+{
+  "attendee": {attendeeID}
+}
+```
+With the following query/parameters:
+````
+?id = {eventID}
+````
+Example Response:
+```
+Attendee has been added successfully.
+```
+#### **2.8 Deleting Event Information**
+Deletes a event information using a DELETE request based on the event ID.
 
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>401 Unauthorized</td>
-<td>The ID is invalid</td>
-</tr>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
-</tbody>
-</table>
-
-#### **2.6 Deleting Event Information**
-
+```
+DELETE http://localhost:3000/eventData/:id
+```
+#### **2.9 Delete attendee from event**
+This endpoint allows an anttendee to be deleted from an event when the id is provided
+```
+DELETE http://localhost:3000/eventData/attendee/:id
+```
 
 
 ## 3. **Organizations**
