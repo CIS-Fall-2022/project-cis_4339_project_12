@@ -73,34 +73,39 @@ router.get("/events/:id", (req, res, next) => {
 
 //POST
 router.post("/", (req, res, next) => { 
-    primarydata.create( 
-        req.body,
-        (error, data) => { 
-            if (error) {
-                return next(error);
-            } else {
-                res.json(data); 
+        primarydata.create( 
+            req.body,
+            (error, data) => { 
+                if (error) {
+                    return next(error);
+                } else {
+                    res.json(req.body.firstName + " has been added successfully."); 
+                }
             }
-        }
-    );
+        );
     primarydata.createdAt;
     primarydata.updatedAt;
     primarydata.createdAt instanceof Date;
 });
 
 //PUT update (make sure req body doesn't have the id)
-router.put("/:id", (req, res, next) => { 
-    primarydata.findOneAndUpdate( 
-        { _id: req.params.id }, 
-        req.body,
-        (error, data) => {
-            if (error) {
-                return next(error);
-            } else {
-                res.json(data);
+router.put("/:id", (req, res, next) => {
+    console.log(req.params);
+    if (req.params.id) {
+        primarydata.findOneAndUpdate( 
+            { _id: req.params.id }, 
+            req.body,
+            (error, data) => {
+                if (error) {
+                    return next(error);
+                } else {
+                    res.json(data);
+                }
             }
-        }
-    );
+        );
+    } else {
+        res.status(400).send("ERROR: No client ID provided.");
+    }
 });
 
 //DELETE a client by id
