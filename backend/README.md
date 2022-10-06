@@ -817,55 +817,30 @@ Return Event Object Contains:
 </tbody>
 </table>
 
-NOTE: ...?eventName=('event name'))&searchBy=name. The name of the event goes in the event name spot and should not include the parenthesis. if the event name contains spaces, include the spaces in the URL. 
-
-### **2.4 GET all events an attendee is going to by ID**
-
-GET all events an attendee may attend. 
-
+#### **2.4 Attendee count for events of last two months**
+Get all event attendee count for events in last two months
 ```
-GET localhost:3000/eventData/client/(clientID)
-
+GET http://localhost:3000/attendees
 ```
-Parameter list:
+Example Response:
+```
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
 
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Required?</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>clientID</code></td>
-<td>string</td>
-<td>required</td>
-<td>The ID of the client</td>
-</tr>
+[
+    {
+        "_id": "cac37b60-2be4-11ed-aa14-1124461477ba",
+        "eventName": "Food Drive Event",
+        "totalAttendees": 2
+    },
+    {
+        "_id": "633cde5e6be140127d95d257",
+        "eventName": "Food Drive Event 2",
+        "totalAttendees": 4
+    }
+]
+```
 
-</tbody>
-</table>
-
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
-</tbody>
-</table>
 
 ### **2.5 Create a new event**
 Create using a POST request or the client intake form.
@@ -914,7 +889,7 @@ Possible Errors:
 </tbody>
 </table>
 
-#### **2.6 Updating EventData by ID**
+#### **2.6 Updating Event Information**
 To update an event information, PUT request will be utilized by using the event ID.
 ```
 PUT localhost:3000/eventData/:id
@@ -1057,8 +1032,6 @@ DELETE localhost:3000/eventData/:id
 
 </tbody>
 </table>
-
-
 
 
 ## 3. **Organizations**
