@@ -661,11 +661,11 @@ Possible Errors:
 </tbody>
 </table>
 
-#### **2.2 Getting an event by Event Name or Date**
+#### 2.2 Getting an event by Event Id
 Retrieve an event using the event name or date parameters. 
 
 ```
-GET http://localhost:3000/eventData/eventName/  
+GET localhost:3000/eventData/id/(eventID)
 
 ```
 Parameter list:
@@ -681,17 +681,12 @@ Parameter list:
 </thead>
 <tbody>
 <tr>
-<td><code>eventName</code></td>
+<td><code>eventID</code></td>
 <td>string</td>
 <td>required</td>
-<td>The name of the event</td>
+<td>The ID of the event</td>
 </tr>
-<tr>
-<td><code>Date</code></td>
-<td>Date</td>
-<td>required</td>
-<td>When the event will take place</td>
-</tr>
+
 </tbody>
 </table>
 
@@ -706,14 +701,6 @@ Possible Errors:
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>401 Unauthorized</td>
-<td>The ID is invalid</td>
-</tr>
 <tr>
 <td>405 Unknown</td>
 <td>The request cannot access the database to find data</td>
@@ -751,11 +738,11 @@ Return event Object Contains:
 
 
 
-#### **2.3 Get Attendees list by Event ID**
+#### **2.3 Get Events based On Searching**
 Returns details of all clients that are attending when given an ID.
 
 ```
-GET http://localhost:3000/eventData/events/attendees
+GET localhost:3000/eventData/search/?eventName=Cancer Awareness&searchBy=name
 ```
 
 Parameter list:
@@ -790,14 +777,7 @@ Possible Errors:
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>401 Unauthorized</td>
-<td>The ID is invalid</td>
-</tr>
+
 <tr>
 <td>405 Unknown</td>
 <td>The request cannot access the database to find data</td>
@@ -837,8 +817,57 @@ Return Event Object Contains:
 </tbody>
 </table>
 
+NOTE: ...?eventName=('event name'))&searchBy=name. The name of the event goes in the event name spot and should not include the parenthesis. if the event name contains spaces, include the spaces in the URL. 
 
-### **2.4 Create a new event**
+### **2.4 GET all events an attendee is going to by ID**
+
+GET all events an attendee may attend. 
+
+```
+GET localhost:3000/eventData/client/(clientID)
+
+```
+Parameter list:
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required?</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>clientID</code></td>
+<td>string</td>
+<td>required</td>
+<td>The ID of the client</td>
+</tr>
+
+</tbody>
+</table>
+
+Possible Errors:
+<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
+
+<table>
+<thead>
+<tr>
+<th>Error code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>405 Unknown</td>
+<td>The request cannot access the database to find data</td>
+</tr>
+</tbody>
+</table>
+
+### **2.5 Create a new event**
 Create using a POST request or the client intake form.
 New event can be created using a POST request which will have frontend called 'Create Event'. This will be linked with the OrganizationData _id to show which organizations is holding the event.
 ```
@@ -879,20 +908,16 @@ Possible Errors:
 </thead>
 <tbody>
 <tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
 <td>405 Unknown</td>
 <td>The request cannot access the database to find data</td>
 </tr>
 </tbody>
 </table>
 
-#### **2.5 Updating Event Information**
+#### **2.6 Updating EventData by ID**
 To update an event information, PUT request will be utilized by using the event ID.
 ```
-PUT http://localhost:3000/eventData/:id
+PUT localhost:3000/eventData/:id
 ```
 
 Here, the id is the event's ID whose information will be updated.
@@ -948,14 +973,7 @@ Possible Errors:
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>401 Unauthorized</td>
-<td>The ID is invalid</td>
-</tr>
+
 <tr>
 <td>405 Unknown</td>
 <td>The request cannot access the database to find data</td>
@@ -963,7 +981,83 @@ Possible Errors:
 </tbody>
 </table>
 
-#### **2.6 Deleting Event Information**
+#### **2.7 Adding a new attendee to an even**
+It will be PUT function which would allow to add a new client to an event/ 
+```
+PUT localhost:3000/eventData/addAttendee/96fb0b80-2d4d-11ed-8dbb-afee4c00c4cb
+```
+NOTE: When updating an event attendee list, go to the body section in POSTMAN. Guide to raw and select JSON. Once JSON is selected, write the JSON for attendee ID. Example is given below. 
+
+```
+{
+    "attendee":"Attendee ID"
+}
+```
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required?</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EventID</code></td>
+<td>string</td>
+<td>required</td>
+<td>The ID of the Event</td>
+</tr>
+
+</tbody>
+</table>
+
+Possible Errors:
+<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
+
+<table>
+<thead>
+<tr>
+<th>Error code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>405 Unknown</td>
+<td>The request cannot access the database to find data</td>
+</tr>
+</tbody>
+</table>
+
+#### **2.8 Delete an event**
+DELETE function to remove an event from the Database.  
+```
+DELETE localhost:3000/eventData/:id
+```
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required?</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EventID</code></td>
+<td>string</td>
+<td>required</td>
+<td>The ID of the Event</td>
+</tr>
+
+</tbody>
+</table>
+
 
 
 
