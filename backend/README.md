@@ -41,7 +41,7 @@ npm start
 The primaryData routes and endpoints are used when the user tries to get entries of a client, get events associated with a single client, create clients and add them into the database, and update client's information.
 
 #### **1.1 Getting All Client Entries**
-Returns details of all clients.
+Returns details of last ten (10) most recently updated/added clients.
 
 ```
 GET http://localhost:3000/primaryData
@@ -104,23 +104,6 @@ Client Object contains:
 </tbody>
 </table>
 
-Possible Errors:
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
-</tbody>
-</table>
-
 #### **1.2 Get 1 Client by ID**
 Returns all details of the specified clients provided a valid client ID as URL token.
 
@@ -145,32 +128,6 @@ Parameter list:
 <td>string</td>
 <td>required</td>
 <td>The unique identifier of the client</td>
-</tr>
-</tbody>
-</table>
-
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>401 Unauthorized</td>
-<td>The ID is invalid</td>
-</tr>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
 </tr>
 </tbody>
 </table>
@@ -251,28 +208,6 @@ Parameter list:
 </tbody>
 </table>
 
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
-</tbody>
-</table>
-
 Return Client Object Contains:
 <table>
 <thead>
@@ -334,32 +269,6 @@ Parameter list:
 </tbody>
 </table>
 
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>401 Unauthorized</td>
-<td>The ID is invalid</td>
-</tr>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
-</tbody>
-</table>
-
 Return Event Object Contains:
 <table>
 <thead>
@@ -387,8 +296,7 @@ Return Event Object Contains:
 </tr>
 </tbody>
 </table>
-<!-- 
-Phone numbers is not within an array anymore -->
+
 #### **1.5 Creating a Client**
 Creates a client using a POST request or the client intake form.
 
@@ -406,7 +314,6 @@ Accept: application/json
 Accept-Charset: utf-8
 
 {
-  "_id": "96fb0b80-2d4d-11ed-8dbb-afee4c00c4cb",
   "firstName": "Pablo",
   "lastName": "Escobang", 
   "phoneNumbers": {
@@ -417,29 +324,6 @@ Accept-Charset: utf-8
     "city": "Houston"
 }
 ```
-
-
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
-</tbody>
-</table>
 
 #### **1.6 Updating a Client's Information**
 Updates a client's information using a PUT request based on the client's ID.
@@ -460,7 +344,6 @@ Accept: application/json
 Accept-Charset: utf-8
 
 {
-  "_id": "96fb0b80-2d4d-11ed-8dbb-afee4c00c4cb",
   "firstName": "Pablito",
   "lastName": "Escobongo",
   "phoneNumbers": {
@@ -490,34 +373,6 @@ Response will be identical with the change using the follwing field for matching
 </tbody>
 </table>
 
-
-
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>401 Unauthorized</td>
-<td>The ID is invalid</td>
-</tr>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
-</tbody>
-</table>
-
 #### **1.7 Deleting a Client's Information**
 Deletes a client's information using a DELETE request based on the client's ID.
 
@@ -526,67 +381,6 @@ DELETE http://localhost:3000/primaryData/deleteClient/:id
 ```
 
 Here, the id is the client's ID whose information will be deleted.
-
-Example Request:
-
-```
-DELETE / HTTP/1.1
-Host: localhost:3000
-Content-Type: application/json
-Accept: application/json
-Accept-Charset: utf-8
-
-{
-    "_id": "96fb0b80-2d4d-11ed-8dbb-afee4c00c4ca"
-}
-```
-
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>_id</td>
-<td>String</td>
-<td>Client ID that is associated to the delete request
-</tr>
-</tbody>
-</table>
-
-Response will remove the client entry that matches the id in the parameter.
-
-
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>401 Unauthorized</td>
-<td>The ID is invalid</td>
-</tr>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
-</tbody>
-</table>
-
 
 NOTE: All GET, POST, PUT, and DELETE requests will be handled by the router.
 
