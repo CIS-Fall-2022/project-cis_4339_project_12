@@ -76,7 +76,7 @@ router.get("/attendees",(req,res,next)=>{
     let twoMonthsAgo = todayDate;
     eventdata.aggregate([
         {
-            $match: {date:{$gte: twoMonthsAgo}},
+            $match: {date:{$gte: twoMonthsAgo, $lte: new Date()}},
         },
         {
             $project:{eventName:1, attendees:1}
