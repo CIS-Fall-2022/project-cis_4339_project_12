@@ -100,8 +100,6 @@ let eventDataSchema = new Schema({
     collection: 'eventData'
 });
 
-//TODO: Revise this schema creation
-//THOUGHTS: Is this schema even needed? How will new organizations be created?
 let organizationDataSchema = new Schema({
     // _id is type string to faciliate 3 letter IDs like BOL, CFC etc
     _id:{ type: String},
