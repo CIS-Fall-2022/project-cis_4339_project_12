@@ -169,7 +169,7 @@ router.delete("/:id", (req, res, next) => {
             if (error) {
                 return next(error);
             } else {
-                res.json(data);
+                res.send("Event has successfully been deleted.");
             }
         }
     );
