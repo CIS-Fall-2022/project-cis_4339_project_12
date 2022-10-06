@@ -368,7 +368,7 @@ Response will be identical with the change using the follwing field for matching
 <tr>
 <td>_id</td>
 <td>String</td>
-<td>Client ID that is associated to the update request
+<td>Client ID that is associated to the update request</td>
 </tr>
 </tbody>
 </table>
@@ -377,7 +377,7 @@ Response will be identical with the change using the follwing field for matching
 Deletes a client's information using a DELETE request based on the client's ID.
 
 ```
-DELETE http://localhost:3000/primaryData/deleteClient/:id
+DELETE http://localhost:3000/primaryData/:id
 ```
 
 Here, the id is the client's ID whose information will be deleted.
@@ -385,7 +385,7 @@ Here, the id is the client's ID whose information will be deleted.
 NOTE: All GET, POST, PUT, and DELETE requests will be handled by the router.
 
 ## **2. Event Data**
-The eventData document will stored all the information regarding the event and have routes/endpoints which will lead to information about a specific event. Furthermore, the routes will also allow the creation of new events, update events information if needed, how many attendees are there for an event, and get entries of all the events.
+The eventData endpoints and routes will be used for all the information regarding events. Furthermore, the routes will also allow the creation of new events, update events information if needed, how many attendees are there for an event, and get entries of all the events.
 
 #### **2.1 Getting all Event entries**
 This will return details of all the events that are taking place. 
@@ -435,23 +435,6 @@ Event Data object contains:
 <td>not required</td>
 <td>Description of the event </td>
 </tr>
-
-</table>
-
-Possible Errors:
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
 </tbody>
 </table>
 
@@ -459,7 +442,7 @@ Possible Errors:
 Retrieve an event using the event name or date parameters. 
 
 ```
-GET http://localhost:3000/eventData/eventName/  
+GET http://localhost:3000/eventData/search/ 
 
 ```
 Parameter list:
@@ -489,32 +472,6 @@ Parameter list:
 </tbody>
 </table>
 
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>401 Unauthorized</td>
-<td>The ID is invalid</td>
-</tr>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
-</tbody>
-</table>
-
 Return event Object Contains:
 <table>
 <thead>
@@ -535,7 +492,6 @@ Return event Object Contains:
 <td>Date</td>
 <td>Date of the event that will take place</td>
 </tr>
-<tr>
 <td><code>Address</code></td>
 <td>Object</td>
 <td>Contains the address strings of the event</td>
@@ -545,11 +501,11 @@ Return event Object Contains:
 
 
 
-#### **2.3 Get Attendees list by Event ID**
-Returns details of all clients that are attending when given an ID.
+#### **2.3 Get event by event ID**
+Returns details of specified event.
 
 ```
-GET http://localhost:3000/eventData/events/attendees
+GET http://localhost:3000/eventData/id/:id"
 ```
 
 Parameter list:
@@ -568,65 +524,7 @@ Parameter list:
 <td><code>_id</code></td>
 <td>string</td>
 <td>required</td>
-<td>The unique identifier of the client</td>
-</tr>
-</tbody>
-</table>
-
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>401 Unauthorized</td>
-<td>The ID is invalid</td>
-</tr>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
-</tbody>
-</table>
-
-Return Event Object Contains:
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>firstName</code></td>
-<td>string</td>
-<td>First Name of the client/attendee</td>
-</tr>
-<tr>
-<td><code>lastName</code></td>
-<td>string</td>
-<td>LastName of the client/attendee</td>
-</tr>
-<tr>
-<td><code>address</code></td>
-<td>Object</td>
-<td>Address of the client</td>
-</tr>
-<td><code>phoneNumbers</code></td>
-<td>Object</td>
-<td>Contains the primary phone number of the cilent</td>
+<td>The unique identifier of the event</td>
 </tr>
 </tbody>
 </table>
@@ -684,29 +582,6 @@ Accept-Charset: utf-8
 }
 ```
 
-
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
-</tbody>
-</table>
-
 #### **2.6 Updating Event Information**
 To update an event information, PUT request will be utilized by using the event ID.
 ```
@@ -748,40 +623,46 @@ Response will be identical with the addition of the follwing field:
 <tr>
 <td>_id</td>
 <td>String</td>
-<td>Client ID that is associated to the update request
+<td>Client ID that is associated to the update request</td>
 </tr>
 </tbody>
 </table>
 
+#### **2.7 Adding attendee to event**
+This endpoint allows for an attendee to be added to an event
+```
+PUT http://localhost:3000/eventData/attendee/:id
+```
+Example Request:
+```
+PUT / HTTP/1.1 200 ok
+Content-Type: application/json
+Accept: application/json
+Accept-Charset: utf-8
 
+{
+  "attendee": {attendeeID}
+}
+```
+With the following query/parameters:
+````
+?id = {eventID}
+````
+Example Response:
+```
+Attendee has been added successfully.
+```
+#### **2.8 Deleting Event Information**
+Deletes a event information using a DELETE request based on the event ID.
 
-Possible Errors:
-<!-- https://github.com/Medium/medium-api-docs#2-authentication -->
-
-<table>
-<thead>
-<tr>
-<th>Error code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400 Bad Request</td>
-<td>Required fields not specified</td>
-</tr>
-<tr>
-<td>401 Unauthorized</td>
-<td>The ID is invalid</td>
-</tr>
-<tr>
-<td>405 Unknown</td>
-<td>The request cannot access the database to find data</td>
-</tr>
-</tbody>
-</table>
-
-#### **2.6 Deleting Event Information**
+```
+DELETE http://localhost:3000/eventData/:id
+```
+#### **2.9 Delete attendee from event**
+This endpoint allows an anttendee to be deleted from an event when the id is provided
+```
+DELETE http://localhost:3000/eventData/attendee/:id
+```
 
 
 ## 3. **Organizations**
