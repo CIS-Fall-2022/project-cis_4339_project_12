@@ -1,3 +1,5 @@
+// These endpoints will only be used for testing purposes of organizations and their data.
+
 // import express module
 const express = require("express");
 const router = express.Router();
