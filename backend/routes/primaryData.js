@@ -1,16 +1,27 @@
-const express = require("express"); 
-const router = express.Router(); 
+const express = require("express");
+const router = express.Router();
+//allow using a .env file
+require("dotenv").config();
+
+// Ensures that ord ID is always capitalized
+const ORG_ID = process.env.ORG_ID.toUpperCase();
 
 //importing data model schemas
-let { primarydata } = require("../models/models"); 
-let { eventdata } = require("../models/models"); 
+let { primarydata } = require("../models/models");
+let { eventdata } = require("../models/models");
 
 //GET all entries
-router.get("/", (req, res, next) => { 
-    primarydata.find( 
+router.get("/", (req, res, next) => {
+    primarydata.find(
+        // Filters event based on current org ID in the env file
+        { organization_id: ORG_ID },
         (error, data) => {
             if (error) {
                 return next(error);
+                // TODO: Make note of this error code in the readme documentation
+                // If no data is returned, either org does not exist or no clients are found
+            } else if (data.length == 0) {
+                res.status(404).send(ORG_ID + " organization has no clients or does not exist.")
             } else {
                 res.json(data);
             }
@@ -20,12 +31,17 @@ router.get("/", (req, res, next) => {
 
 //GET single entry by ID
 router.get("/id/:id", (req, res, next) => {
-    primarydata.find( 
-        { _id: req.params.id }, 
+    primarydata.find(
+        { _id: req.params.id, organization_id: ORG_ID },
         (error, data) => {
             if (error) {
                 return next(error);
-            } else {
+                // TODO: Make note of this error code in the readme documentation
+                // If no data is returned, either org does not exist or client does not exist
+            } else if (data.length == 0) {
+                res.status(404).send("Client does not exist or organization does not exist.")
+            }
+            else {
                 res.json(data);
             }
         }
@@ -34,21 +50,31 @@ router.get("/id/:id", (req, res, next) => {
 
 //GET entries based on search query
 //Ex: '...?firstName=Bob&lastName=&searchBy=name' 
-router.get("/search/", (req, res, next) => { 
+router.get("/search/", (req, res, next) => {
     let dbQuery = "";
+    // Variable to store type of query for error message; ie. Name or Date
+    let queryType = "";
     if (req.query["searchBy"] === 'name') {
         dbQuery = { firstName: { $regex: `^${req.query["firstName"]}`, $options: "i" }, lastName: { $regex: `^${req.query["lastName"]}`, $options: "i" } }
+        queryType = "Client name";
     } else if (req.query["searchBy"] === 'number') {
         dbQuery = {
             "phoneNumbers.primaryPhone": { $regex: `^${req.query["phoneNumbers.primaryPhone"]}`, $options: "i" }
         }
+        queryType = "Client number";
     };
-    primarydata.find( 
-        dbQuery, 
-        (error, data) => { 
+    // Adding the organization ID to the dbQuery object for filtering
+    dbQuery["organization_id"] = ORG_ID
+    primarydata.find(
+        dbQuery,
+        (error, data) => {
             if (error) {
                 return next(error);
-            } else {
+                // TODO: Make note of this error code in the readme documentation
+            } else if (data.length == 0) {
+                res.status(404).send(queryType + " not found or organization does not exist.")
+            }
+            else {
                 res.json(data);
             }
         }
@@ -56,15 +82,21 @@ router.get("/search/", (req, res, next) => {
 });
 
 //GET events for a single client
-router.get("/events/:id", (req, res, next) => { 
+// TODO: What is the different between this end point and the get single client in the eventsData.js file
+router.get("/events/:id", (req, res, next) => {
     eventdata.find(
         {
-            "attendees": req.params.id
+            attendees: req.params.id,
+            organization_id: ORG_ID
         },
-        (error, data) => { 
+        (error, data) => {
             if (error) {
                 return next(error);
-            } else {
+            // TODO: Make note of this error code in the readme documentation
+            }else if (data.length == 0) {
+                res.status(404).send("Client is not signed up for an event in this organization or organization does not exist.")
+            } 
+            else {
                 res.json(data);
             }
         }
@@ -72,17 +104,20 @@ router.get("/events/:id", (req, res, next) => {
 });
 
 //POST
-router.post("/", (req, res, next) => { 
-        primarydata.create( 
-            req.body,
-            (error, data) => { 
-                if (error) {
-                    return next(error);
-                } else {
-                    res.json(req.body.firstName + " has been added successfully."); 
-                }
+router.post("/", (req, res, next) => {
+    // Add organization ID to new event created
+    req.body.organization_id = ORG_ID;
+    primarydata.create(
+        req.body,
+        (error, data) => {
+            // TODO: Add an error if client already exists
+            if (error) {
+                return next(error);
+            } else {
+                res.json(req.body.firstName + " has been added successfully.");
             }
-        );
+        }
+    );
     primarydata.createdAt;
     primarydata.updatedAt;
     primarydata.createdAt instanceof Date;
@@ -90,10 +125,10 @@ router.post("/", (req, res, next) => {
 
 //PUT update (make sure req body doesn't have the id)
 router.put("/:id", (req, res, next) => {
-    console.log(req.params);
     if (req.params.id) {
-        primarydata.findOneAndUpdate( 
-            { _id: req.params.id }, 
+        primarydata.findOneAndUpdate(
+             // Find and update event based on ID and organization ID
+            { _id: req.params.id, organization_id: ORG_ID},
             req.body,
             (error, data) => {
                 if (error) {
@@ -111,8 +146,8 @@ router.put("/:id", (req, res, next) => {
 //DELETE a client by id
 // https://www.kindsonthegenius.com/nodejs/node-js-rest-api-with-typescript-part-3-post-put-delete/
 router.delete("/:id", (req, res, next) => {
-    primarydata.findOneAndDelete( 
-        { _id: req.params.id }, 
+    primarydata.findOneAndDelete(
+        { _id: req.params.id },
         req.body,
         (error, data) => {
             if (error) {
