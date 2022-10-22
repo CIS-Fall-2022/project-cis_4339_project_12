@@ -79,6 +79,8 @@ router.get("/search/", (req, res, next) => {
     );
 });
 
+// This endpoint is not documented, we may want to consider removing it.
+// TODO: What is the different between this end point and the get single client in the primaryData.js file
 //GET events for which a client is signed up
 router.get("/client/:id", (req, res, next) => { 
     eventdata.find( 
