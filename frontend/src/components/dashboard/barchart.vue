@@ -28,16 +28,31 @@ export default {
     return {
       chartOptions: {
         responsive: false,
+        color: "black",
         plugins: {
           title: {
             display: true,
-            text: 'Events of past two months attendee count'
+            text: 'Events of past two months attendee count',
+            color: "rgb(185,28,28)",
+            font: {
+              size: 20
+            }
+          },
+          legend:{
+            labels: {
+              font:{
+                size: 20
+              }
+            }
           }
         },
         scales: {
           x: {
             grid: {
               display: false,
+            },
+            ticks:{
+              fontSize: 50
             }
           },
           y: {
