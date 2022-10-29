@@ -111,12 +111,13 @@ router.get("/attendees",(req,res,next)=>{
             $match: {date:{$gte: twoMonthsAgo, $lte: new Date()}, organization_id: ORG_ID},
         },
         {
-            $project:{eventName:1, attendees:1}
+            $project:{eventName:1, attendees:1,date:1}
         },
         {
             $group:{
                 _id:"$_id",
                 eventName: {$first:"$eventName"},
+                eventDate:{$last:"$date"},
                 totalAttendees:{
                     $sum:{
                         $size:"$attendees"
