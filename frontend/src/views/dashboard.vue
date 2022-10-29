@@ -1,14 +1,16 @@
 <template>
-  <main>
+  <main class="h-screen">
     <div>
       <h1 class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10">Welcome</h1>
     </div>
-    <div>
+    <section class="flex flex-col mt-10">
+    <div class="mx-auto">
       <BarChart :chartData="chartData" :loaded="loaded" />
     </div>
     <div>
       <EventTable :eventData="eventData"/>
     </div>
+    </section>
   </main>
 </template>
 <script>
@@ -26,7 +28,7 @@ export default {
           {
             label: "Total Attendees",
             backgroundColor: "#f87979",
-            barThickness: 50
+            barThickness: 50,
           }
         ]
       }
