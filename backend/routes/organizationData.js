@@ -3,10 +3,26 @@
 // import express module
 const express = require("express");
 const router = express.Router();
-
+//allow using a .env file
+require("dotenv").config(); 
+// Ensures that ord ID is always capitalized
+const ORG_ID = process.env.ORG_ID.toUpperCase();
 // import organization schema
 let {orgdata} = require("../models/models");
 
+// GET active organization
+// TODO: Write error code for if no active organization found
+router.get("/active",(req,res,next) => {
+    orgdata.find({_id: ORG_ID},(error,data) =>{
+        if (error){
+            return next(error);
+        }else{
+            res.json(data);
+        }
+    }
+    )
+}
+)
 // GET all organizations
 router.get("/",(req,res,next) => {
     orgdata.find((error, data) => {
