@@ -128,8 +128,13 @@ export default {
           import.meta.env.VITE_ROOT_API +
           `/primarydata/search/?phoneNumbers.primaryPhone=${this.phoneNumber}&searchBy=number`;
       }
-      axios.get(apiURL).then((resp) => {
+      axios.get(apiURL)
+      .then((resp) => {
         this.queryData = resp.data;
+      })
+      .catch((error) => {
+            alert("Client could not be found.");
+            console.log(error);
       });
     },
     clearSearch() {
@@ -141,9 +146,11 @@ export default {
 
       //get all entries
       let apiURL = import.meta.env.VITE_ROOT_API + `/primarydata/`;
-      axios.get(apiURL).then((resp) => {
+      axios
+        .get(apiURL)
+        .then((resp) => {
         this.queryData = resp.data;
-      });
+        });
     },
     editClient(clientID) {
       this.$router.push({ name: "updateclient", params: { id: clientID } });
