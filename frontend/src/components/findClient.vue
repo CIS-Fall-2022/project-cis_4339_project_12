@@ -58,6 +58,7 @@
             @click="clearSearch"
             type="submit"
           >Clear Search</button>
+          <!-- <h1 v-if="awesome">Vue is awesome!</h1> -->
           <button
             class="bg-red-700 text-white rounded"
             @click="handleSubmitForm"
@@ -118,6 +119,7 @@ export default {
   },
   methods: {
     handleSubmitForm() {
+      this.clientExist = false;
       let apiURL = "";
       if (this.searchBy === "Client Name") {
         apiURL =
@@ -133,10 +135,13 @@ export default {
         this.queryData = resp.data;
       })
       .catch((error) => {
-            alert("Client could not be found.");
-            console.log(error);
+            // alert("Client could not be found.");
+            // console.log(error);
+            if(error.response.status == 404){
+              this.clientExist = true
+            }
       });
-    },
+  },
     clearSearch() {
       //Resets all the variables
       this.searchBy = "";

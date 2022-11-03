@@ -11,12 +11,13 @@ export default {
   },
   data() {
     return {
+      clientExist: false,
       client: {
         firstName: "",
         middleName: "",
         lastName: "",
         email: "",
-        phoneNumbers:
+        phoneNumbers: 
           {
             primaryPhone: "",
             secondaryPhone: "",
@@ -33,6 +34,7 @@ export default {
   },
   methods: {
     async handleSubmitForm() {
+      this.clientExist = false;
       // Checks to see if there are any errors in validation
       const isFormCorrect = await this.v$.$validate();
       // If no errors found. isFormCorrect = True then the form is submitted
@@ -51,20 +53,21 @@ export default {
               phoneNumbers: 
                 {
                   primaryPhone: "",
-                  secondaryPhone: ""
+                  seondaryPhone: "",
                 },
               address: {
                 line1: "",
                 line2: "",
                 city: "",
                 county: "",
-                zip: ""
-              }
+                zip: "",
+              },
             };
           })
           .catch((error) => {
-            alert("Client has NOT been succesfully added.");
-            console.log(error);
+            if(error.response.status == 403){
+              this.clientExist = true
+            }
           });
       }
     },
@@ -79,7 +82,7 @@ export default {
         address: {
           city: { required },
         },
-        phoneNumbers:
+        phoneNumbers: 
           {
             primaryPhone: { required, numeric },
           },
@@ -90,8 +93,8 @@ export default {
 </script>
 <template>
   <main>
-    <h1 class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10">Client Intake Form</h1>
-    <div class="px-10 py-20">
+    <div v-if="clientExist" class="text-red-700 font-bold mt-2 ml-10">ERROR: This client already exists.</div>
+    <div class="px-10 py-10">
       <!-- @submit.prevent stops the submit event from reloading the page-->
       <form @submit.prevent="handleSubmitForm">
         <!-- grid container -->

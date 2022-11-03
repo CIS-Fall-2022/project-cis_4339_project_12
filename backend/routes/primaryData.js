@@ -75,7 +75,8 @@ router.get("/search/", (req, res, next) => {
                 res.status(404).send(queryType + " not found or organization does not exist.")
             }
             else {
-                res.json(data);
+                // res.json(data);
+                res.status(404).send("Client could not be found.");
             }
         }
     );
@@ -105,22 +106,36 @@ router.get("/events/:id", (req, res, next) => {
 
 //POST
 router.post("/", (req, res, next) => {
-    // Add organization ID to new event created
-    req.body.organization_id = ORG_ID;
-    primarydata.create(
-        req.body,
-        (error, data) => {
-            // TODO: Add an error if client already exists
-            if (error) {
-                return next(error);
-            } else {
-                res.json(req.body.firstName + " has been added successfully.");
-            }
+    // Check if client exists first
+    primarydata.find({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        "phoneNumbers.primaryPhone":req.body.phoneNumbers.primaryPhone,
+        organization_id: ORG_ID
+    },(error,data)=>{
+        if(error){
+            return next(error);
+        }else if(data.length == 0){
+            // Add organization ID to new event created
+                req.body.organization_id = ORG_ID;
+                primarydata.create(
+                    req.body,
+                    (error, data) => {
+                        if (error) {
+                            return next(error);
+                        } else {
+                            res.json(req.body.firstName + " has been added successfully.");
+                        }
+                    }
+                );
+                primarydata.createdAt;
+                primarydata.updatedAt;
+                primarydata.createdAt instanceof Date;
+        } else{
+            res.status(403).send("Client already exists.");
         }
-    );
-    primarydata.createdAt;
-    primarydata.updatedAt;
-    primarydata.createdAt instanceof Date;
+    })
+    
 });
 
 //PUT update (make sure req body doesn't have the id)
