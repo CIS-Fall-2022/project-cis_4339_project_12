@@ -93,7 +93,7 @@ export default {
 </script>
 <template>
   <main>
-    <div v-if="clientExist" class="text-red-700 font-bold mt-2 ml-10">ERROR: This client already exists.</div>
+    <div v-if="clientExist" class="text-red-700 font-bold mt-2 ml-10">ERROR: This Client Already Exists.</div>
     <div class="px-10 py-10">
       <!-- @submit.prevent stops the submit event from reloading the page-->
       <form @submit.prevent="handleSubmitForm">

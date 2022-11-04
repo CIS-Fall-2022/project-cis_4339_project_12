@@ -1,5 +1,6 @@
 <template>
   <main>
+    <div v-if="clientNotFound" class="text-red-700 font-bold mt-2 ml-10">ERROR: This Client Cannot Be Found.</div>
     <div>
       <h1 class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10">Find Client</h1>
     </div>
@@ -102,6 +103,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      clientNotFound: false,
       queryData: [],
       //Parameter for search to occur
       searchBy: "",
@@ -138,7 +140,7 @@ export default {
             // alert("Client could not be found.");
             // console.log(error);
             if(error.response.status == 404){
-              this.clientExist = true
+              this.clientNotFound = true
             }
       });
   },
