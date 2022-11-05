@@ -3,7 +3,7 @@
     <div>
       <h1 class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10">Welcome</h1>
     </div>
-    <section class="flex flex-col mt-10">
+    <section class="flex flex-col mt-10 mx-4">
     <div class="mx-auto">
       <BarChart :chartData="chartData" :loaded="loaded" />
     </div>
