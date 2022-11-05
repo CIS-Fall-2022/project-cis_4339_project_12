@@ -203,6 +203,12 @@
               @click="$router.go(-1)"
             >Go back</button>
           </div>
+          <div></div>
+          <div class="flex justify-between mt-10 mr-20">
+            <button @click="handleDeleteEvent" class="border bg-black text-white rounded">
+              Delete Event
+            </button>
+          </div>
         </div>
 
         <hr class="mt-10 mb-10" />
@@ -309,6 +315,15 @@ export default {
   methods: {
     formattedDate(datetimeDB) {
       return DateTime.fromISO(datetimeDB).plus({ days: 1 }).toLocaleString();
+    },
+    handleDeleteEvent(){
+      let apiURL = import.meta.env.VITE_ROOT_API + `/eventdata/${this.id}`;
+      axios.delete(apiURL).then(()=>{
+        alert("Event has been deleted.");
+        this.$router.back().catch((error)=>{
+          console.log(error);
+        })
+      })
     },
     handleEventUpdate() {
       this.event.services = this.checkedServices;
