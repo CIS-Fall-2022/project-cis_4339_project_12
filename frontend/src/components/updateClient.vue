@@ -71,7 +71,6 @@ export default {
           `/eventdata/client/${this.$route.params.id}`
       )
       .then((resp) => {
-        // let data = resp.data;
         resp.data.forEach((event) => {
           this.clientEvents.push({
             eventName: event.eventName,
@@ -109,7 +108,6 @@ export default {
       axios.put(apiURL, this.client).then(() => {
         alert("Update has been saved.");
         this.$router.back().catch((error) => {
-          // ADD IN ERROR CODE HERE!!!!!!!!!!
           console.log(error);
         });
       });
