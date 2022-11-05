@@ -1,5 +1,6 @@
 <template>
   <main>
+    <div v-if="clientNotFound" class="text-red-700 font-bold mt-2 ml-10">ERROR: This Client Cannot Be Found.</div>
     <div>
       <h1 class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10">Find Client</h1>
     </div>
@@ -86,7 +87,7 @@
           <tbody class="divide-y divide-gray-300">
             <tr @click="editClient(client._id)" v-for="client in queryData" :key="client._id">
               <td class="p-2 text-left">{{ client.firstName + " " + client.lastName }}</td>
-              <td class="p-2 text-left">{{ client.phoneNumbers[0].primaryPhone }}</td>
+              <td class="p-2 text-left">{{ client.phoneNumbers.primaryPhone }}</td>
               <td class="p-2 text-left">{{ client.address.city }}</td>
             </tr>
           </tbody>
@@ -101,6 +102,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      clientNotFound: false,
       queryData: [],
       //Parameter for search to occur
       searchBy: "",
@@ -118,6 +120,7 @@ export default {
   },
   methods: {
     handleSubmitForm() {
+      this.clientExist = false;
       let apiURL = "";
       if (this.searchBy === "Client Name") {
         apiURL =
@@ -128,10 +131,16 @@ export default {
           import.meta.env.VITE_ROOT_API +
           `/primarydata/search/?phoneNumbers.primaryPhone=${this.phoneNumber}&searchBy=number`;
       }
-      axios.get(apiURL).then((resp) => {
+      axios.get(apiURL)
+      .then((resp) => {
         this.queryData = resp.data;
+      })
+      .catch((error) => {
+            if(error.response.status == 404){
+              this.clientNotFound = true
+            }
       });
-    },
+  },
     clearSearch() {
       //Resets all the variables
       this.searchBy = "";
@@ -141,9 +150,11 @@ export default {
 
       //get all entries
       let apiURL = import.meta.env.VITE_ROOT_API + `/primarydata/`;
-      axios.get(apiURL).then((resp) => {
+      axios
+        .get(apiURL)
+        .then((resp) => {
         this.queryData = resp.data;
-      });
+        });
     },
     editClient(clientID) {
       this.$router.push({ name: "updateclient", params: { id: clientID } });
