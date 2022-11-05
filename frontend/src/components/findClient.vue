@@ -59,7 +59,6 @@
             @click="clearSearch"
             type="submit"
           >Clear Search</button>
-          <!-- <h1 v-if="awesome">Vue is awesome!</h1> -->
           <button
             class="bg-red-700 text-white rounded"
             @click="handleSubmitForm"
@@ -137,8 +136,6 @@ export default {
         this.queryData = resp.data;
       })
       .catch((error) => {
-            // alert("Client could not be found.");
-            // console.log(error);
             if(error.response.status == 404){
               this.clientNotFound = true
             }
