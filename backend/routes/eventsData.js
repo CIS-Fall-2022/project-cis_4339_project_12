@@ -82,10 +82,13 @@ router.get("/search/", (req, res, next) => {
 // This endpoint is not documented, we may want to consider removing it.
 // TODO: What is the different between this end point and the get single client in the primaryData.js file
 //GET events for which a client is signed up
-router.get("/client/:id", (req, res, next) => {
-    eventdata.find(
-        { attendees: req.params.id, organization_id: ORG_ID },
-        (error, data) => {
+router.get("/client/:id", (req, res, next) => { 
+    eventdata.find( 
+        { 
+            attendees: req.params.id, 
+            organization_id: ORG_ID
+        }, 
+        (error, data) => { 
             if (error) {
                 return next(error);
                 // TODO: Make note of this error code in the readme documentation
@@ -111,15 +114,16 @@ router.get("/attendees", (req, res, next) => {
             $match: { date: { $gte: twoMonthsAgo, $lte: new Date() }, organization_id: ORG_ID },
         },
         {
-            $project: { eventName: 1, attendees: 1 }
+            $project:{eventName:1, attendees:1,date:1}
         },
         {
-            $group: {
-                _id: "$_id",
-                eventName: { $first: "$eventName" },
-                totalAttendees: {
-                    $sum: {
-                        $size: "$attendees"
+            $group:{
+                _id:"$_id",
+                eventName: {$first:"$eventName"},
+                eventDate:{$last:"$date"},
+                totalAttendees:{
+                    $sum:{
+                        $size:"$attendees"
                     }
                 }
             }

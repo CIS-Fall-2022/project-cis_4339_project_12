@@ -1,6 +1,6 @@
 <template>
   <main class="flex flex-row">
-    <div id="_container" class="h-screen">
+    <div id="_container">
       <header class="w-full">
         <section class="text-center">
           <img class="m-auto" src="@\assets\DanPersona.svg" />
@@ -48,7 +48,7 @@
           background: linear-gradient(250deg, #C8102E 70%, #efecec 50.6%);
         "
       >
-        <h1 class="mr-20 text-3xl text-white">Dataplatform</h1>
+        <h1 class="mr-20 text-3xl text-white">{{activeOrg.organizationName}}</h1>
       </section>
       <div>
         <router-view></router-view>
@@ -58,8 +58,23 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "App",
+  data(){
+    return {
+      activeOrg: {}
+    }
+  },
+  beforeMount(){
+    // Gets information about mounted organization to display on main pages
+    let apiURL = import.meta.env.VITE_ROOT_API + '/organizationData/active';
+    axios.get(apiURL).then((res)=>{
+        this.activeOrg = res.data[0];
+  })
+}
+ 
+    
 };
 </script>
 
