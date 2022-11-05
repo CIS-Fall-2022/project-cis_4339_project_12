@@ -94,6 +94,16 @@ export default {
     formattedDate(datetimeDB) {
       return DateTime.fromISO(datetimeDB).plus({ days: 1 }).toLocaleString();
     },
+    handleClientDelete(){
+      let apiURL = import.meta.env.VITE_ROOT_API + `/primarydata/${this.id}`;
+      axios.delete(apiURL).then(()=>{
+        alert("Client has been deleted.");
+        this.$router.back().catch((error)=> {
+          // TODO: We may want to display the error on screen
+          console.log(error);
+        })
+      })
+    },
     handleClientUpdate() {
       let apiURL = import.meta.env.VITE_ROOT_API + `/primarydata/${this.id}`;
       axios.put(apiURL, this.client).then(() => {
@@ -337,6 +347,14 @@ export default {
               class="border border-red-700 bg-white text-red-700 rounded"
               @click="$router.go(-1)"
             >Go back</button>
+          </div>
+          <div>
+
+          </div>
+          <div class="flex justify-between mt-10 mr-20">
+            <button @click="handleClientDelete" class="border bg-black text-white rounded">
+              Delete Client
+            </button>
           </div>
         </div>
 
