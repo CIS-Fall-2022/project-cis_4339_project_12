@@ -18,7 +18,6 @@ router.get("/", (req, res, next) => {
         (error, data) => {
             if (error) {
                 return next(error);
-                // TODO: Make note of this error code in the readme documentation
                 // If no data is returned, either org does not exist or no clients are found
             } else if (data.length == 0) {
                 res.status(404).send(ORG_ID + " organization has no clients or does not exist.")
@@ -36,7 +35,6 @@ router.get("/id/:id", (req, res, next) => {
         (error, data) => {
             if (error) {
                 return next(error);
-                // TODO: Make note of this error code in the readme documentation
                 // If no data is returned, either org does not exist or client does not exist
             } else if (data.length == 0) {
                 res.status(404).send("Client does not exist or organization does not exist.")
@@ -70,12 +68,10 @@ router.get("/search/", (req, res, next) => {
         (error, data) => {
             if (error) {
                 return next(error);
-                // TODO: Make note of this error code in the readme documentation
             } else if (data.length == 0) {
                 res.status(404).send(queryType + " not found or organization does not exist.")
             }
             else {
-                // res.json(data);
                 res.status(404).send("Client could not be found.");
             }
         }
@@ -83,7 +79,6 @@ router.get("/search/", (req, res, next) => {
 });
 
 //GET events for a single client
-// TODO: What is the different between this end point and the get single client in the eventsData.js file
 router.get("/events/:id", (req, res, next) => {
     eventdata.find(
         {
@@ -93,7 +88,6 @@ router.get("/events/:id", (req, res, next) => {
         (error, data) => {
             if (error) {
                 return next(error);
-            // TODO: Make note of this error code in the readme documentation
             }else if (data.length == 0) {
                 res.status(404).send("Client is not signed up for an event in this organization or organization does not exist.")
             } 
