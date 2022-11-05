@@ -1,28 +1,28 @@
 const express = require("express");
 const router = express.Router();
 //allow using a .env file
-require("dotenv").config(); 
+require("dotenv").config();
 
 // Ensures that ord ID is always capitalized
 const ORG_ID = process.env.ORG_ID.toUpperCase();
 
 //importing data model schemas
-let { eventdata } = require("../models/models"); 
+let { eventdata } = require("../models/models");
 
 //GET all entries
-router.get("/", (req, res, next) => { 
+router.get("/", (req, res, next) => {
     eventdata.find(
         // Filters event based on current org ID in the env file
-        {organization_id: ORG_ID}, 
+        { organization_id: ORG_ID },
         (error, data) => {
             if (error) {
                 return next(error);
-            // TODO: Make note of this error code in the readme documentation
-            // If no data is returned, either org does not exist or no events are found
+                // TODO: Make note of this error code in the readme documentation
+                // If no data is returned, either org does not exist or no events are found
             } else if (data.length == 0) {
                 res.status(404).send(ORG_ID + " organization has no events or does not exist.")
             }
-             else {
+            else {
                 res.json(data);
             }
         }
@@ -35,11 +35,11 @@ router.get("/id/:id", (req, res, next) => {
     eventdata.find({ _id: req.params.id, organization_id: ORG_ID }, (error, data) => {
         if (error) {
             return next(error)
-        // TODO: Make note of this error code in the readme documentation
-        // If no data is returned, either org does not exist or event does not exist
+            // TODO: Make note of this error code in the readme documentation
+            // If no data is returned, either org does not exist or event does not exist
         } else if (data.length == 0) {
             res.status(404).send("Event does not exist or organization does not exist.")
-        } 
+        }
         else {
             res.json(data)
         }
@@ -48,7 +48,7 @@ router.get("/id/:id", (req, res, next) => {
 
 //GET entries based on search query
 //Ex: '...?eventName=Food&searchBy=name' 
-router.get("/search/", (req, res, next) => { 
+router.get("/search/", (req, res, next) => {
     let dbQuery = "";
     // Variable to store type of query for error message; ie. Name or Date
     let queryType = "";
@@ -57,20 +57,20 @@ router.get("/search/", (req, res, next) => {
         queryType = "Event name";
     } else if (req.query["searchBy"] === 'date') {
         dbQuery = {
-            date:  req.query["eventDate"]
+            date: req.query["eventDate"]
         };
         queryType = "Event date";
     };
     // Adding the organization ID to the dbQuery object for filtering
     dbQuery["organization_id"] = ORG_ID
-    eventdata.find( 
-        dbQuery, 
-        (error, data) => { 
+    eventdata.find(
+        dbQuery,
+        (error, data) => {
             if (error) {
                 return next(error);
-            // TODO: Make note of this error code in the readme documentation
+                // TODO: Make note of this error code in the readme documentation
             } else if (data.length == 0) {
-                res.status(404).send(queryType + " not found or organization does not exist.") 
+                res.status(404).send(queryType + " not found or organization does not exist.")
             }
             else {
                 res.json(data);
@@ -82,16 +82,16 @@ router.get("/search/", (req, res, next) => {
 // This endpoint is not documented, we may want to consider removing it.
 // TODO: What is the different between this end point and the get single client in the primaryData.js file
 //GET events for which a client is signed up
-router.get("/client/:id", (req, res, next) => { 
-    eventdata.find( 
-        { attendees: req.params.id, organization_id: ORG_ID}, 
-        (error, data) => { 
+router.get("/client/:id", (req, res, next) => {
+    eventdata.find(
+        { attendees: req.params.id, organization_id: ORG_ID },
+        (error, data) => {
             if (error) {
                 return next(error);
-            // TODO: Make note of this error code in the readme documentation
+                // TODO: Make note of this error code in the readme documentation
             } else if (data.length == 0) {
                 res.status(404).send("Client is not signed up for an event in this organization or organization does not exist.")
-            }  
+            }
             else {
                 res.json(data);
             }
@@ -101,38 +101,38 @@ router.get("/client/:id", (req, res, next) => {
 
 // GET attendee count for specific event within last 2 months
 // https://stackoverflow.com/questions/21387969/mongodb-count-the-number-of-items-in-an-array
-router.get("/attendees",(req,res,next)=>{
+router.get("/attendees", (req, res, next) => {
     let todayDate = new Date();
     // Sets month to two months ago
     todayDate.setMonth(todayDate.getMonth() - 2);
     let twoMonthsAgo = todayDate;
     eventdata.aggregate([
         {
-            $match: {date:{$gte: twoMonthsAgo, $lte: new Date()}, organization_id: ORG_ID},
+            $match: { date: { $gte: twoMonthsAgo, $lte: new Date() }, organization_id: ORG_ID },
         },
         {
-            $project:{eventName:1, attendees:1}
+            $project: { eventName: 1, attendees: 1 }
         },
         {
-            $group:{
-                _id:"$_id",
-                eventName: {$first:"$eventName"},
-                totalAttendees:{
-                    $sum:{
-                        $size:"$attendees"
+            $group: {
+                _id: "$_id",
+                eventName: { $first: "$eventName" },
+                totalAttendees: {
+                    $sum: {
+                        $size: "$attendees"
                     }
                 }
             }
         }
-    ],(error, data) => {
+    ], (error, data) => {
         if (error) {
-          return next(error)
-         // TODO: Make note of this error code in the readme documentation
-        }else if (data.length == 0) {
+            return next(error)
+            // TODO: Make note of this error code in the readme documentation
+        } else if (data.length == 0) {
             res.status(404).send("Organization has no events within the last two months or organization does not exist.")
-        }  
-         else {
-          res.json(data);
+        }
+        else {
+            res.json(data);
         }
     });
 });
@@ -140,19 +140,31 @@ router.get("/attendees",(req,res,next)=>{
 //POST
 // Create new event
 router.post("/", (req, res, next) => {
-    // Add organization ID to new event created
-    req.body.organization_id = ORG_ID;
-    eventdata.create( 
-        req.body, 
-        (error, data) => { 
-            // TODO: Add an error for if an event already exists, we may need to add a composite unqiue identifier for event. Such as if both the event name and event date is the same, it can be assumed that it is the same event
-            if (error) {
-                return next(error);
-            } else {
-                res.send("Event has been successfully created.");
-            }
+    eventdata.find({
+        eventName: req.body.eventName,
+        date: req.body.date,
+        organization_id: ORG_ID
+    }, (error, data) => {
+        if (error) {
+            return next(error);
+        } else if (data.length == 0) {
+            // Add organization ID to new event created
+            req.body.organization_id = ORG_ID;
+            eventdata.create(
+                req.body,
+                (error, data) => {
+                    if (error) {
+                        return next(error)
+                    } else {
+                        res.json(req.body.eventName + " has been successfully added.")
+                    }
+                }
+            )
+        } else {
+            res.status(403).send("Event already exists.")
         }
-    );
+    }
+    )
 });
 
 //PUT
@@ -174,16 +186,16 @@ router.put("/:id", (req, res, next) => {
 //PUT add attendee to event
 router.put("/attendee/:id", (req, res, next) => {
     //only add attendee if not yet signed up
-    eventdata.find( 
-        { _id: req.params.id, attendees: req.body.attendee }, 
-        (error, data) => { 
+    eventdata.find(
+        { _id: req.params.id, attendees: req.body.attendee },
+        (error, data) => {
             if (error) {
                 return next(error);
             } else {
                 // This line ensures that the attendee does not already exist
                 if (data.length == 0) {
                     eventdata.updateOne(
-                        { _id: req.params.id }, 
+                        { _id: req.params.id },
                         { $push: { attendees: req.body.attendee } },
                         (error, data) => {
                             if (error) {
@@ -194,11 +206,11 @@ router.put("/attendee/:id", (req, res, next) => {
                         }
                     );
                 }
-                
+
             }
         }
     );
-    
+
 });
 
 //DELETE event data
@@ -217,27 +229,27 @@ router.delete("/:id", (req, res, next) => {
 });
 
 router.delete("/attendee/:id", (req, res, next) => {
-    eventdata.find( 
-        { _id: req.params.id, attendees: req.body.attendee }, 
-        (error, data) => { 
+    eventdata.find(
+        { _id: req.params.id, attendees: req.body.attendee },
+        (error, data) => {
             if (error) {
                 return next(error);
             } else {
-                    eventdata.updateOne(
-                        { _id: req.params.id }, 
-                        { $pull: { attendees: req.body.attendee } },
-                        (error, data) => {
-                            if (error) {
-                                return next(error);
-                            } else {
-                                res.send("Client has been successfully removed from event.");
-                            }
+                eventdata.updateOne(
+                    { _id: req.params.id },
+                    { $pull: { attendees: req.body.attendee } },
+                    (error, data) => {
+                        if (error) {
+                            return next(error);
+                        } else {
+                            res.send("Client has been successfully removed from event.");
                         }
-                    );  
+                    }
+                );
             }
         }
     );
-    
+
 });
 module.exports = router;
 
