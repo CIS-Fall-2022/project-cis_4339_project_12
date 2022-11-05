@@ -1,5 +1,6 @@
 <template>
   <main>
+    <div v-if="clientExist" class="text-red-700 font-bold mt-2 ml-10">ERROR: Event already exists </div> 
     <div>
       <h1 class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10">Create New Event</h1>
     </div>
@@ -207,6 +208,7 @@ export default {
   },
   data() {
     return {
+      clientExist: false,
       checkedServices: [],
       event: {
         eventName: "",
@@ -252,7 +254,9 @@ export default {
             this.checkedServices = [];
           })
           .catch((error) => {
-            console.log(error);
+            if(error.response.status == 403){
+              this.clientExist = true;
+            }
           });
       }
     },
