@@ -59,7 +59,7 @@ export default {
     methods:{
         formattedDate(date){
             let eventDate = new Date(date)
-            return DateTime.fromJSDate(eventDate).toLocaleString()
+            return DateTime.fromJSDate(eventDate).plus({days:1}).toLocaleString()
         }
     }
 }
