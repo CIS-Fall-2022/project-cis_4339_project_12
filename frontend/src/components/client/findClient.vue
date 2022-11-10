@@ -1,39 +1,49 @@
 <template>
   <main>
-    <div>
-      <h1 class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10">List of Events</h1>
-    </div>
+    <div v-if="clientNotFound" class="text-red-700 font-bold mt-2 ml-10">ERROR: This Client Cannot Be Found.</div>
     <div class="px-10 pt-20">
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
-        <h2 class="text-2xl font-bold">Search Event By</h2>
+        <h2 class="text-2xl font-bold">Search Client By</h2>
         <!-- Displays Client Name search field -->
         <div class="flex flex-col">
           <select
             class="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             v-model="searchBy"
           >
-            <option value="Event Name">Event Name</option>
-            <option value="Event Date">Event Date</option>
+            <option value="Client Name">Client Name</option>
+            <option value="Client Number">Client Number</option>
           </select>
         </div>
-        <div class="flex flex-col" v-if="searchBy === 'Event Name'">
+        <div class="flex flex-col" v-if="searchBy === 'Client Name'">
           <label class="block">
             <input
               type="text"
               class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              v-model="eventName"
+              v-model="firstName"
               v-on:keyup.enter="handleSubmitForm"
-              placeholder="Enter event name"
+              placeholder="Enter first name"
             />
           </label>
         </div>
-        <!-- Displays event date search field -->
-        <div class="flex flex-col" v-if="searchBy === 'Event Date'">
+        <div class="flex flex-col" v-if="searchBy === 'Client Name'">
+          <label class="block">
+            <input
+              type="text"
+              class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              v-model="lastName"
+              v-on:keyup.enter="handleSubmitForm"
+              placeholder="Enter last name"
+            />
+          </label>
+        </div>
+        <!-- Displays Client Number search field -->
+        <div class="flex flex-col" v-if="searchBy === 'Client Number'">
           <input
             class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            type="date"
-            v-model="eventDate"
+            type="text"
+            v-model="phoneNumber"
             v-on:keyup.enter="handleSubmitForm"
+            placeholder="Enter Client Phone Number"
           />
         </div>
       </div>
@@ -50,7 +60,7 @@
             class="bg-red-700 text-white rounded"
             @click="handleSubmitForm"
             type="submit"
-          >Search Event</button>
+          >Search Client</button>
         </div>
       </div>
     </div>
@@ -59,23 +69,23 @@
     <!-- Display Found Data -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
       <div class="ml-10">
-        <h2 class="text-2xl font-bold">List of Events</h2>
+        <h2 class="text-2xl font-bold">List of Clients</h2>
         <h3 class="italic">Click table row to edit/display an entry</h3>
       </div>
       <div class="flex flex-col col-span-2">
         <table class="min-w-full shadow-md rounded">
           <thead class="bg-gray-50 text-xl">
             <tr>
-              <th class="p-4 text-left">Event Name</th>
-              <th class="p-4 text-left">Event Date</th>
-              <th class="p-4 text-left">Event Address</th>
+              <th class="p-4 text-left">Name</th>
+              <th class="p-4 text-left">Phone number</th>
+              <th class="p-4 text-left">City</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-300">
-            <tr @click="editEvent(event._id)" v-for="event in queryData" :key="event._id">
-              <td class="p-2 text-left">{{ event.eventName }}</td>
-              <td class="p-2 text-left">{{ formattedDate(event.date) }}</td>
-              <td class="p-2 text-left">{{ event.address.line1 }}</td>
+            <tr @click="editClient(client._id)" v-for="client in queryData" :key="client._id">
+              <td class="p-2 text-left">{{ client.firstName + " " + client.lastName }}</td>
+              <td class="p-2 text-left">{{ client.phoneNumbers.primaryPhone }}</td>
+              <td class="p-2 text-left">{{ client.address.city }}</td>
             </tr>
           </tbody>
         </table>
@@ -84,61 +94,67 @@
   </main>
 </template>
 <script>
-import { DateTime } from "luxon";
 import axios from "axios";
 
 export default {
   data() {
     return {
+      clientNotFound: false,
       queryData: [],
       //Parameter for search to occur
       searchBy: "",
-      eventName: "",
-      eventDate: "",
+      firstName: "",
+      lastName: "",
+      phoneNumber: "",
     };
   },
   mounted() {
-    let apiURL = import.meta.env.VITE_ROOT_API + `/eventdata/`;
-    this.queryData = [];
+    let apiURL = import.meta.env.VITE_ROOT_API + `/primarydata/`;
     axios.get(apiURL).then((resp) => {
       this.queryData = resp.data;
     });
     window.scrollTo(0, 0);
   },
   methods: {
-    formattedDate(datetimeDB) {
-      return DateTime.fromISO(datetimeDB).plus({ days: 1 }).toLocaleString();
-    },
     handleSubmitForm() {
+      this.clientExist = false;
       let apiURL = "";
-      if (this.searchBy === "Event Name") {
+      if (this.searchBy === "Client Name") {
         apiURL =
           import.meta.env.VITE_ROOT_API +
-          `/eventdata/search/?eventName=${this.eventName}&searchBy=name`;
-      } else if (this.searchBy === "Event Date") {
+          `/primarydata/search/?firstName=${this.firstName}&lastName=${this.lastName}&searchBy=name`;
+      } else if (this.searchBy === "Client Number") {
         apiURL =
           import.meta.env.VITE_ROOT_API +
-          `/eventdata/search/?eventDate=${this.eventDate}&searchBy=date`;
+          `/primarydata/search/?phoneNumbers.primaryPhone=${this.phoneNumber}&searchBy=number`;
       }
-      axios.get(apiURL).then((resp) => {
+      axios.get(apiURL)
+      .then((resp) => {
         this.queryData = resp.data;
+      })
+      .catch((error) => {
+            if(error.response.status == 404){
+              this.clientNotFound = true
+            }
       });
-    },
+  },
     clearSearch() {
       //Resets all the variables
       this.searchBy = "";
-      this.eventName = "";
-      this.eventDate = "";
+      this.firstName = "";
+      this.lastName = "";
+      this.phoneNumber = "";
 
       //get all entries
-      let apiURL = import.meta.env.VITE_ROOT_API + `/eventdata/`;
-      this.queryData = [];
-      axios.get(apiURL).then((resp) => {
+      let apiURL = import.meta.env.VITE_ROOT_API + `/primarydata/`;
+      axios
+        .get(apiURL)
+        .then((resp) => {
         this.queryData = resp.data;
-      });
+        });
     },
-    editEvent(eventID) {
-      this.$router.push({ name: "eventdetails", params: { id: eventID } });
+    editClient(clientID) {
+      this.$router.push({ name: "updateclient", params: { id: clientID } });
     },
   },
 };

@@ -6,7 +6,7 @@
 
 </template>
 <script>
-import IntakeForm from "../components/intakeForm.vue";
+import IntakeForm from "../../components/client/intakeForm.vue";
 export default{
     components: {IntakeForm}
 }
