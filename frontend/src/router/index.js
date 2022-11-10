@@ -4,41 +4,39 @@ const routes = [
     {
         path: '/',
         name: 'dashboard',
-        props: true,
         component: () => import('../views/dashboard.vue')
     },
     {
         path: '/intakeform',
         name: 'intakeForm',
-        props: true,
-        component: () => import('../components/intakeForm.vue')
+        component: () => import('../views/client/clientIntake.vue')
     },
     {
         path: '/findclient',
         name: 'findClient',
-        component: () => import('../components/findClient.vue')
+        component: () => import('../views/client/clientSearch.vue')
     },
     {
         path: '/updateclient/:id',
         name: 'updateclient',
         props: true,
-        component: () => import('../components/updateClient.vue')
+        component: () => import('../views/client/clientUpdate.vue')
     },
     {
         path: '/eventform',
         name: 'eventform',
-        component: () => import('../components/eventForm.vue')
+        component: () => import('../views/event/eventIntake.vue')
     },
     {
         path: '/findEvents',
         name: 'findEvents',
-        component: () => import('../components/findEvents.vue')
+        component: () => import('../views/event/eventSearch.vue')
     },
     {
         path: '/eventDetails/:id',
         name: 'eventdetails',
         props: true,
-        component: () => import('../components/eventDetails.vue')
+        component: () => import('../views/event/eventUpdate.vue')
     }
 ]
 const router = createRouter({
