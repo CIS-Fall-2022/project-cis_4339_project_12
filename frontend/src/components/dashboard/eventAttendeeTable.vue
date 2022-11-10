@@ -14,7 +14,7 @@
                     <td>&nbsp</td>
                     <td class="p-2 text-left">{{eventDetail.eventName}}</td>
                     <td class="p-2 text-left">{{formattedDate(eventDetail.eventDate)}}</td>
-                    <td class="p-2 text-left">{{eventDetail.totalAttendees}}</td>
+                    <td class="p-2 text-left">{{eventDetail.totalAttendees}} attendee(s)</td>
                 </tr>
                 <tr>
                     <td class="bg-gray-50 text-xl font-bold">Totals</td>
