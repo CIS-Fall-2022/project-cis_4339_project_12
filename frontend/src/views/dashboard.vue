@@ -3,13 +3,16 @@
     <div>
       <h1 class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10">Welcome</h1>
     </div>
-    <section class="flex flex-col mt-10 mx-4">
+    <section class="flex flex-col mt-10 mx-4" v-if="hasData">
     <div class="mx-auto">
       <BarChart :chartData="chartData" :loaded="loaded" />
     </div>
     <div>
       <EventTable :eventData="eventData"/>
     </div>
+    </section>
+    <section class="mt-10">
+      <p class="font-bold text-center text-2xl" v-if="!hasData">There are no events within the last two months.</p>
     </section>
   </main>
 </template>
@@ -21,6 +24,7 @@ export default {
   components: { BarChart,EventTable },
   data() {
     return {
+      hasData: false,
       eventData: {},
       loaded: false,
       chartData: {
@@ -48,6 +52,15 @@ export default {
       this.chartData.datasets[0].data = data;
     })
     this.loaded = true;
+  },
+  watch:{
+    eventData(){
+      if (this.eventData){
+        this.hasData = true
+      }else{
+        this.hasData = false
+      }
+    }
   }
 };
 </script>
