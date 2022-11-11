@@ -72,7 +72,7 @@ router.get("/search/", (req, res, next) => {
                 res.status(404).send(queryType + " not found or organization does not exist.")
             }
             else {
-                res.status(404).send("Client could not be found.");
+                res.json(data);
             }
         }
     );
