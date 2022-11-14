@@ -1,5 +1,6 @@
 <template>
   <main>
+    <div v-if="eventNotFound" class="text-red-700 font-bold mt-2 ml-10">ERROR: This Event Cannot Be Found.</div>
     <div class="px-10 pt-20">
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
         <h2 class="text-2xl font-bold">Search Event By</h2>
@@ -106,6 +107,7 @@ export default {
       return DateTime.fromISO(datetimeDB).plus({ days: 1 }).toLocaleString();
     },
     handleSubmitForm() {
+      this.eventExist = false;
       let apiURL = "";
       if (this.searchBy === "Event Name") {
         apiURL =
@@ -118,8 +120,35 @@ export default {
       }
       axios.get(apiURL).then((resp) => {
         this.queryData = resp.data;
+      })
+        .catch((error) => {
+            if(error.response.status == 404){
+              this.eventNotFound = true
+            }
       });
     },
+  //   handleSubmitForm() {
+  //     this.eventExist = false;
+  //     let apiURL = "";
+  //     if (this.searchBy === "Event Name") {
+  //       apiURL =
+  //         import.meta.env.VITE_ROOT_API +
+  //         `/eventdata/search/?eventName=${this.eventName}&searchBy=name`;
+  //     } else if (this.searchBy === "Event Date") {
+  //       apiURL =
+  //         import.meta.env.VITE_ROOT_API +
+  //         `/eventdata/search/?eventDate.eventDate=${this.eventdate}&searchBy=date`;
+  //     }
+  //     axios.get(apiURL)
+  //     .then((resp) => {
+  //       this.queryData = resp.data;
+  //     })
+  //     .catch((error) => {
+  //           if(error.response.status == 404){
+  //             this.eventNotFound = true
+  //           }
+  //     });
+  // },
     clearSearch() {
       //Resets all the variables
       this.searchBy = "";

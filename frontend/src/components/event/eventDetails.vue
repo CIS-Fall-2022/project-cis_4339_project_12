@@ -310,6 +310,7 @@ export default {
       });
   },
   methods: {
+  
     formattedDate(datetimeDB) {
       return DateTime.fromISO(datetimeDB).plus({ days: 1 }).toLocaleString();
     },
